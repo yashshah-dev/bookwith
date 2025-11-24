@@ -1,4 +1,4 @@
-// エラーメッセージのキー
+// Error message keys
 export const PODCAST_ERROR_KEYS = {
   GENERATION_FAILED: 'podcast.pane.generation_failed',
   REGENERATION_FAILED: 'podcast.pane.regeneration_failed',
@@ -8,7 +8,7 @@ export const PODCAST_ERROR_KEYS = {
   UNKNOWN_ERROR: 'podcast.errors.unknown',
 } as const
 
-// ポッドキャストのアイコンサイズ
+// Podcast icon sizes
 export const PODCAST_ICON_SIZES = {
   XS: 'h-3 w-3',
   SM: 'h-4 w-4',
@@ -16,7 +16,7 @@ export const PODCAST_ICON_SIZES = {
   LG: 'h-8 w-8',
 } as const
 
-// キーボードショートカット
+// Keyboard shortcuts
 export const PODCAST_KEYBOARD_SHORTCUTS = {
   PLAY_PAUSE: ' ',
   SKIP_FORWARD: 'ArrowRight',
@@ -28,7 +28,7 @@ export const PODCAST_KEYBOARD_SHORTCUTS = {
   MUTE_TOGGLE: 'm',
 } as const
 
-// UIコンポーネントのクラス名
+// UI component class names
 export const PODCAST_UI_CLASSES = {
   ERROR_CARD: 'rounded-md border border-red-200 bg-red-50 p-3',
   PROCESSING_CARD: 'border-blue-200 bg-blue-50 p-6',
@@ -37,7 +37,7 @@ export const PODCAST_UI_CLASSES = {
   PLAY_BUTTON: 'h-12 w-12',
 } as const
 
-// アニメーションクラス
+// Animation classes
 export const PODCAST_ANIMATIONS = {
   SPIN: 'animate-spin',
   FADE_IN: 'animate-fade-in',

@@ -85,7 +85,7 @@ class SummarizationService:
     def _convert_sender_to_japanese(self, sender: str) -> str:
         """送信者を日本語に変換."""
         if sender == "user":
-            return "ユーザー"
+            return "User"
         if sender == "assistant":
             return "AI"
         return "システム"
@@ -119,19 +119,21 @@ class SummarizationService:
                 [
                     (
                         "system",
-                        """あなたは高品質な要約を生成するAIアシスタントです。
+                        """You are an AI assistant that generates high-quality summaries. Always write summaries in English.
 
-以下の会話を要約してください。以下のガイドラインに従ってください：
+Please summarize the following conversation. Follow these guidelines:
 
-1. 重要な情報、話題、キーポイントを保持しつつ、簡潔にまとめてください。
-2. 要約は300文字以内に収めてください。
-3. 時系列順に話の流れがわかるように要約してください。
-4. ユーザーの質問と、その回答の要点を含めてください。
-5. 検索で再利用できるよう、重要なキーワードや専門用語を保持してください。
-6. 箇条書きではなく、流れるような文章で要約してください。
+1. Keep important information, topics, and key points while making it concise.
+2. Keep the summary within 300 characters.
+3. Summarize in chronological order so the flow of conversation is clear.
+4. Include the user's questions and key points from the answers.
+5. Retain important keywords and technical terms for searchability.
+6. Write as flowing prose, not bullet points.
 
-要約の形式例：
-「ユーザーは〇〇について質問し、AIは△△と回答した。その後、◇◇について議論し、□□という結論に至った。」""",
+Example summary format:
+"The user asked about X, and the AI responded with Y. Then they discussed Z and reached the conclusion of W."
+
+IMPORTANT: Write the entire summary in English language only.""",
                     ),
                     ("human", "{text}"),
                 ]

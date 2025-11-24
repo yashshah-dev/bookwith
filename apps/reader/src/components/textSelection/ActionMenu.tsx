@@ -42,7 +42,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
         variant="ghost"
         size="icon"
         className="h-auto w-auto rounded-lg p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-        title="チャットを開く"
+        title="Open chat"
         onClick={() => {
           hide()
           setAction('chat')
@@ -73,7 +73,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
       >
         <MdOutlineEdit size={iconSize} />
       </Button>
-      {/* NOTE: Annotationとの使い分けが曖昧なので、一旦コメントアウト */}
+      {/* NOTE: Distinction from Annotation is ambiguous, so commented out for now */}
       {/* {tab.isDefined(text) ? (
         <Button
           variant="ghost"

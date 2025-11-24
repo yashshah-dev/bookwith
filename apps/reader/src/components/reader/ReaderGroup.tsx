@@ -108,7 +108,7 @@ export function ReaderGroup({ index }: ReaderGroupProps) {
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error(
-                        `本の取得に失敗しました: ${response.status}`,
+                        `Failed to fetch book: ${response.status}`,
                       )
                     }
                     return response.json()
@@ -117,7 +117,7 @@ export function ReaderGroup({ index }: ReaderGroupProps) {
                     if (data.success && data.data) {
                       return data.data
                     }
-                    throw new Error('APIレスポンスの形式が正しくありません')
+                    throw new Error('API response format is incorrect')
                   }))
               if (tabParam) tabs.push(tabParam)
             }

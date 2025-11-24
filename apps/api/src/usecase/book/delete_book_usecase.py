@@ -56,7 +56,7 @@ class DeleteBookUseCaseImpl(DeleteBookUseCase):
             with contextlib.suppress(Exception):
                 blob.delete()
 
-        # ベクターDBから本のデータを削除
+        # Delete book data from vector DB
         try:
             self.memory_service.delete_book_memories(user_id=book.user_id, book_id=book_id)
         except Exception as e:
@@ -124,7 +124,7 @@ class BulkDeleteBooksUseCaseImpl(BulkDeleteBooksUseCase):
                 with contextlib.suppress(Exception):
                     blob.delete()
 
-            # ベクターDBから本のデータを削除
+            # Delete book data from vector DB
             try:
                 self.memory_service.delete_book_memories(user_id=book.user_id, book_id=book.id.value)
             except Exception as e:

@@ -23,7 +23,7 @@ class CreateBookUseCase(ABC):
         cover_image: str | None = None,
         book_metadata: str | None = None,
     ) -> Book:
-        """新しいBookを作成して返す"""
+        """Create and return a new Book"""
 
 
 class CreateBookUseCaseImpl(CreateBookUseCase):
@@ -41,7 +41,7 @@ class CreateBookUseCaseImpl(CreateBookUseCase):
         cover_image: str | None = None,
         book_metadata: str | None = None,
     ) -> Book:
-        """新しいBookを作成して保存し、作成したBookエンティティを返す."""
+        """Create and save a new Book, returning the created Book entity."""
         decoded_file_data = base64.b64decode(file_data)
 
         metadata_dict: dict[str, Any] = {}
@@ -70,7 +70,7 @@ class CreateBookUseCaseImpl(CreateBookUseCase):
                     cover_path = self.gcs_client.upload_file(cover_blob_name, image_binary, "image/jpeg")
                     uploaded_files.append(cover_blob_name)
                 except Exception as e:
-                    self._logger.error(f"カバー画像の保存中にエラーが発生しました: {str(e)}")
+                    self._logger.error(f"Error occurred while saving cover image: {str(e)}")
 
             book = Book.create(
                 id=book_id,
@@ -101,7 +101,7 @@ class CreateBookUseCaseImpl(CreateBookUseCase):
             return book
 
         except Exception as e:
-            self._logger.error(f"Book作成中にエラーが発生しました: {str(e)}")
+            self._logger.error(f"Error occurred while creating book: {str(e)}")
             self._rollback_storage(uploaded_files)
             raise
 

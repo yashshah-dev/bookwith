@@ -1,9 +1,8 @@
 """Converter functions for Podcast domain objects to API response schemas
 
-Note: 将来的にはBookエンティティと同様に、Podcastエンティティのmodel_dump(mode="json")を
-直接使用し、PodcastResponseのfrom_attributes=Trueと組み合わせることで、
-このconverterレイヤーを削除できる可能性があります。
-例: PodcastResponse(**podcast.model_dump(mode="json"))
+Note: In the future, similar to Book entity, using Podcast entity's model_dump(mode="json") directly
+combined with PodcastResponse's from_attributes=True could eliminate this converter layer.
+Example: PodcastResponse(**podcast.model_dump(mode="json"))
 """
 
 from src.domain.podcast.entities.podcast import Podcast

@@ -1,38 +1,38 @@
 class BookDomainException(Exception):  # noqa: N818
-    """Bookドメインに関連する例外の基底クラス"""
+    """Base exception class for Book domain"""
 
 
 class BookNotFoundException(BookDomainException):
-    """要求された書籍が見つからなかった場合の例外"""
+    """Exception when requested book is not found"""
 
     def __init__(self, book_id: str) -> None:
         self.book_id = book_id
-        super().__init__(f"ID {book_id} の書籍が見つかりません")
+        super().__init__(f"Book with ID {book_id} not found")
 
 
 class BookAlreadyStartedException(BookDomainException):
-    """既に開始されている書籍を再度開始しようとした場合の例外"""
+    """Exception when trying to start a book that is already started"""
 
     def __init__(self) -> None:
-        super().__init__("この書籍は既に読書開始状態です")
+        super().__init__("This book has already been started")
 
 
 class BookAlreadyCompletedException(BookDomainException):
-    """既に完了している書籍に対して操作を行おうとした場合の例外"""
+    """Exception when trying to perform operations on a completed book"""
 
     def __init__(self) -> None:
-        super().__init__("この書籍は既に読了済みです")
+        super().__init__("This book has already been completed")
 
 
 class BookPermissionDeniedException(BookDomainException):
-    """ユーザーが書籍に対するアクセス権を持っていない場合の例外"""
+    """Exception when user does not have access permission to the book"""
 
     def __init__(self) -> None:
-        super().__init__("この書籍へのアクセス権限がありません")
+        super().__init__("You do not have permission to access this book")
 
 
 class BookFileNotFoundException(BookDomainException):
-    """書籍ファイルが見つからない場合の例外"""
+    """Exception when book file is not found"""
 
     def __init__(self) -> None:
-        super().__init__("この書籍のファイルが見つかりません")
+        super().__init__("File for this book was not found")

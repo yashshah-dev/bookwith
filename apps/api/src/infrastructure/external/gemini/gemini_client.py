@@ -309,7 +309,7 @@ GUEST: [what the guest says]
         system_prompt = lang_prompts["system"]
         script_template = lang_prompts["script"]
 
-        # script_templateがリストやタプルの場合は先頭要素を使う
+        # If script_template is a list or tuple, use the first element
         if isinstance(script_template, list | tuple):
             script_template = script_template[0]
         script_template = str(script_template)
@@ -385,7 +385,7 @@ Ensure all content follows the safety guidelines above."""
         # Get language-specific prompts
         lang_prompts = get_prompts_with_language(language)
         chapter_summary_template = lang_prompts["chapter_summary"]
-        # chapter_summary_templateがリストやタプルの場合は先頭要素を使う
+        # If chapter_summary_template is a list or tuple, use the first element
         if isinstance(chapter_summary_template, list | tuple):
             chapter_summary_template = chapter_summary_template[0]
         chapter_summary_template = str(chapter_summary_template)

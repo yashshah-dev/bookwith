@@ -13,10 +13,10 @@ interface LongPressHandlers {
 }
 
 /**
- * 長押し操作を処理するカスタムフック
- * @param action 実行する関数
- * @param options オプション設定
- * @returns イベントハンドラー
+ * Custom hook to handle long press operations
+ * @param action Function to execute
+ * @param options Option settings
+ * @returns Event handlers
  */
 export const useLongPress = (
   action: () => void,
@@ -26,9 +26,9 @@ export const useLongPress = (
   const { interval = LONG_PRESS.DEFAULT_INTERVAL } = options
 
   const start = () => {
-    // 最初に一度実行
+    // Execute once initially
     action()
-    // インターバルで継続実行
+    // Continue executing at intervals
     timer.current = setInterval(action, interval)
   }
 

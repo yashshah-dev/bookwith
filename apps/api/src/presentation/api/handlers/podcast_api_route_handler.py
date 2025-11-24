@@ -79,7 +79,7 @@ async def get_podcast(
         if not podcast:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Podcast not found")
 
-        # converterを使わず直接Pydanticモデルで返す
+        # Return directly using Pydantic model without converter
         return PodcastResponse.model_validate(podcast.model_dump(mode="json"))
 
     except ValueError as e:
@@ -101,7 +101,7 @@ async def get_podcasts_by_book(
         book_domain_id = BookId(book_id)
         podcasts = await find_usecase.execute(book_domain_id)
 
-        # converterを使わず直接Pydanticモデルで返す
+        # Return directly using Pydantic model without converter
         podcast_responses = [PodcastResponse.model_validate(p.model_dump(mode="json")) for p in podcasts]
         return PodcastListResponse(podcasts=podcast_responses, total=len(podcast_responses))
 

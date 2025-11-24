@@ -15,7 +15,7 @@ export interface paths {
     put?: never
     /**
      * Stream Create Message
-     * @description 新しいメッセージを作成し、AI の応答をストリーミングで返す.
+     * @description Create a new message and stream the AI response.
      */
     post: operations['stream_create_message_messages_post']
     delete?: never
@@ -33,7 +33,7 @@ export interface paths {
     }
     /**
      * Get Messages By Chat Id
-     * @description チャットIDでメッセージを検索する.
+     * @description Find messages by chat ID.
      */
     get: operations['get_messages_by_chat_id_messages__chat_id__get']
     put?: never
@@ -56,7 +56,7 @@ export interface paths {
     post?: never
     /**
      * Delete Message
-     * @description メッセージを削除する.
+     * @description Delete a message.
      */
     delete: operations['delete_message_messages__message_id__delete']
     options?: never
@@ -76,7 +76,7 @@ export interface paths {
     post?: never
     /**
      * Bulk Delete Messages
-     * @description 複数のメッセージを一括削除する.
+     * @description Delete multiple messages in bulk.
      */
     delete: operations['bulk_delete_messages_messages_bulk_delete']
     options?: never
@@ -95,7 +95,7 @@ export interface paths {
     put?: never
     /**
      * Upload And Process Rag
-     * @description Base64 で送られてきた EPUB をデコードし、ベクトルストアにインデックス化する.
+     * @description Decode Base64 EPUB and index it in the vector store.
      */
     post: operations['upload_and_process_rag_rag_post']
     delete?: never
@@ -236,7 +236,7 @@ export interface paths {
     put?: never
     /**
      * Create Chat
-     * @description チャットを作成する.
+     * @description Create a chat.
      */
     post: operations['create_chat_chats_post']
     delete?: never
@@ -254,14 +254,14 @@ export interface paths {
     }
     /**
      * Get Chat By Id
-     * @description IDでチャットを取得する.
+     * @description Get a chat by ID.
      */
     get: operations['get_chat_by_id_chats__chat_id__get']
     put?: never
     post?: never
     /**
      * Delete Chat
-     * @description チャットを削除する.
+     * @description Delete the chat.
      */
     delete: operations['delete_chat_chats__chat_id__delete']
     options?: never
@@ -278,7 +278,7 @@ export interface paths {
     }
     /**
      * Get Chats By User Id
-     * @description ユーザーIDに紐づくチャットをすべて取得する.
+     * @description Retrieve all chats associated with a user ID.
      */
     get: operations['get_chats_by_user_id_chats_user__user_id__get']
     put?: never
@@ -298,7 +298,7 @@ export interface paths {
     }
     /**
      * Get Chats By User Id And Book Id
-     * @description ユーザーIDと本IDに紐づくチャットをすべて取得する.
+     * @description Retrieve all chats associated with a user ID and book ID.
      */
     get: operations['get_chats_by_user_id_and_book_id_chats_user__user_id__book__book_id__get']
     put?: never
@@ -324,7 +324,7 @@ export interface paths {
     head?: never
     /**
      * Update Chat Title
-     * @description チャットのタイトルを更新する.
+     * @description Update the chat title.
      */
     patch: operations['update_chat_title_chats__chat_id__title_patch']
     trace?: never
@@ -725,17 +725,17 @@ export interface components {
     ChatCreateRequest: {
       /**
        * Userid
-       * @description ユーザーID
+       * @description User ID
        */
       userId: string
       /**
        * Title
-       * @description チャットのタイトル
+       * @description Chat title
        */
       title?: string | null
       /**
        * Bookid
-       * @description 関連する本のID
+       * @description Related book ID
        */
       bookId?: string | null
     }
@@ -743,34 +743,34 @@ export interface components {
     ChatResponse: {
       /**
        * Id
-       * @description チャットID
+       * @description Chat ID
        */
       id: string
       /**
        * Userid
-       * @description ユーザーID
+       * @description User ID
        */
       userId: string
       /**
        * Title
-       * @description チャットのタイトル
+       * @description Chat title
        */
       title: string
       /**
        * Bookid
-       * @description 関連する本のID
+       * @description Related book ID
        */
       bookId?: string | null
       /**
        * Createdat
        * Format: date-time
-       * @description 作成日時
+       * @description Creation date and time
        */
       createdAt: string
       /**
        * Updatedat
        * Format: date-time
-       * @description 更新日時
+       * @description Update date and time
        */
       updatedAt: string
     }
@@ -778,7 +778,7 @@ export interface components {
     ChatUpdateTitleRequest: {
       /**
        * Title
-       * @description 更新するチャットのタイトル
+       * @description Chat title to update
        */
       title: string
     }
@@ -786,7 +786,7 @@ export interface components {
     ChatsResponse: {
       /**
        * Chats
-       * @description チャットリスト
+       * @description Chat list
        */
       chats: components['schemas']['ChatResponse'][]
     }
@@ -850,51 +850,51 @@ export interface components {
     }
     /**
      * MessageBulkDelete
-     * @description 複数メッセージ削除リクエストモデル.
+     * @description Bulk message delete request model.
      */
     MessageBulkDelete: {
       /**
        * Messageids
-       * @description 削除するメッセージIDのリスト
+       * @description List of message IDs to delete
        */
       messageIds: string[]
     }
     /**
      * MessageCreate
-     * @description メッセージ作成リクエストモデル.
+     * @description Message creation request model.
      */
     MessageCreate: {
       /**
        * Content
-       * @description メッセージの内容
+       * @description Message content
        */
       content: string
       /**
        * Chatid
-       * @description メッセージが所属するチャットID
+       * @description Chat ID the message belongs to
        */
       chatId: string
       /**
        * Senderid
-       * @description 送信者ID
+       * @description Sender ID
        */
       senderId: string
       /**
        * Metadata
-       * @description メッセージの追加情報
+       * @description Additional message information
        */
       metadata?: {
         [key: string]: unknown
       } | null
       /**
        * Bookid
-       * @description メッセージが所属するブックID
+       * @description Book ID the message belongs to
        */
       bookId?: string | null
     }
     /**
      * MessageListResponse
-     * @description メッセージリストレスポンスモデル.
+     * @description Message list response model.
      */
     MessageListResponse: {
       /** Messages */
@@ -904,7 +904,7 @@ export interface components {
     }
     /**
      * MessageResponse
-     * @description メッセージレスポンスモデル.
+     * @description Message response model.
      */
     MessageResponse: {
       /** Id */
@@ -1180,7 +1180,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description メッセージを検索するチャットID */
+        /** @description Chat ID to search for messages */
         chat_id: string
       }
       cookie?: never
@@ -1212,7 +1212,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description 削除するメッセージID */
+        /** @description Message ID to delete */
         message_id: string
       }
       cookie?: never

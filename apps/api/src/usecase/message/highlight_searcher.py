@@ -1,4 +1,4 @@
-"""ハイライト検索サービス."""
+"""Highlight search service."""
 
 import logging
 
@@ -8,36 +8,36 @@ logger = logging.getLogger(__name__)
 
 
 class HighlightSearcher:
-    """書籍のハイライト（アノテーション）検索を行うサービス."""
+    """Service for searching book highlights (annotations)."""
 
     def __init__(self) -> None:
-        """ハイライト検索サービスの初期化."""
+        """Initialize highlight search service."""
         self.memory_vector_store = MemoryVectorStore()
 
     def search_relevant_highlights(self, question: str, user_id: str, book_id: str, limit: int = 3) -> list[str]:
-        """質問に関連するハイライトテキストを検索する."""
+        """Search for highlight texts related to the question."""
         if not (user_id and book_id):
             return ["No highlights found"]
 
-        # 質問をベクトル化
+        # Vectorize the question
         query_vector = self.memory_vector_store.encode_text(question)
 
-        # ハイライトを検索
+        # Search highlights
         try:
             highlights = self.memory_vector_store.search_highlights(user_id=user_id, book_id=book_id, query_vector=query_vector, limit=limit)
         except Exception as e:
             logger.error(f"Failed to search highlights: {e}")
-            return ["検索でエラーが発生しました"]
+            return ["Search error occurred"]
 
         if not highlights:
             return ["No highlights found"]
 
-        # ハイライトテキストを整形
+        # Format highlight texts
         highlight_texts = []
         for h in highlights:
             highlight_text = h["content"]
             if h.get("notes"):
                 highlight_text += f"\n{h['notes']}"
-            highlight_texts.append(f"【ハイライト】{highlight_text}")
+            highlight_texts.append(f"[Highlight]{highlight_text}")
 
         return highlight_texts

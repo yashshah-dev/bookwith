@@ -4,7 +4,7 @@ type MayCallable<T> = T | (() => T)
 type Maybe<T> = T | undefined | null
 type Options = boolean | EventListenerOptions
 
-// ユニオン型を使用して単一の関数シグネチャで実装
+// Implemented using union types for a single function signature
 export function useEventListener<K extends keyof WindowEventMap>(
   targetOrType: K | MayCallable<Maybe<EventTarget>>,
   listenerOrType: ((this: any, e: WindowEventMap[K]) => void) | keyof any,
@@ -17,13 +17,13 @@ export function useEventListener<K extends keyof WindowEventMap>(
   let options: Options | undefined
 
   if (typeof targetOrType === 'string') {
-    // ウィンドウイベントの場合
+    // For window events
     type = targetOrType as string
     listener = listenerOrType as (e: any) => void
     options = optionsOrListener as Options | undefined
     target = globalThis
   } else {
-    // ターゲット指定イベントの場合
+    // For target-specified events
     target = targetOrType
     type = listenerOrType as string
     listener = optionsOrListener as (e: any) => void
@@ -37,7 +37,7 @@ export function useEventListener<K extends keyof WindowEventMap>(
     const _listener = (e: any) => listenerRef.current(e)
     const _target = typeof target === 'function' ? target() : target
 
-    // _targetがnullまたはundefinedでなく、addEventListenerメソッドを持っている場合のみ実行
+    // Execute only if _target is not null or undefined and has addEventListener method
     if (_target && typeof _target.addEventListener === 'function') {
       _target.addEventListener(type, _listener, options)
 

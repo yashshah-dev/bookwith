@@ -13,5 +13,5 @@ class AnnotationText:
 
     @classmethod
     def from_string(cls, text_str: str) -> "AnnotationText":
-        """文字列からAnnotationTextを生成"""
+        """Generate AnnotationText from string"""
         return cls(text_str)

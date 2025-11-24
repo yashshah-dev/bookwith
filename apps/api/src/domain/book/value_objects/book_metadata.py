@@ -4,7 +4,7 @@ from typing import Any
 
 @dataclass(frozen=True)
 class BookMetadata:
-    """EPub書籍のメタデータ値オブジェクト"""
+    """Value object for EPub book metadata."""
 
     title: str | None = None
     creator: str | None = None
@@ -22,18 +22,18 @@ class BookMetadata:
     spread: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        """辞書形式に変換（None値は除外）"""
+        """Convert to dictionary format (excluding None values)."""
         return {k: v for k, v in asdict(self).items() if v is not None}
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "BookMetadata":
-        """辞書から生成"""
-        # 辞書に存在するフィールドのみを渡し、デフォルト値を正しく使用させる
+        """Generate from dictionary."""
+        # Pass only fields that exist in the dictionary to use default values correctly
         return cls(**{field: data[field] for field in cls.__dataclass_fields__ if field in data})
 
     @classmethod
     def from_json_string(cls, json_string: str | None) -> "BookMetadata":
-        """JSON文字列から生成"""
+        """Generate from JSON string."""
         if not json_string:
             return cls()
 

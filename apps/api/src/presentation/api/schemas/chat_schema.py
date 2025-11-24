@@ -6,23 +6,23 @@ from src.presentation.api.schemas.base_schema import BaseSchemaModel
 
 
 class ChatCreateRequest(BaseSchemaModel):
-    user_id: str = Field(..., description="ユーザーID")
-    title: str | None = Field(None, description="チャットのタイトル", max_length=255)
-    book_id: str | None = Field(None, description="関連する本のID")
+    user_id: str = Field(..., description="User ID")
+    title: str | None = Field(None, description="Chat title", max_length=255)
+    book_id: str | None = Field(None, description="Related book ID")
 
 
 class ChatUpdateTitleRequest(BaseSchemaModel):
-    title: str = Field(..., description="更新するチャットのタイトル", max_length=255)
+    title: str = Field(..., description="Chat title to update", max_length=255)
 
 
 class ChatResponse(BaseSchemaModel):
-    id: str = Field(..., description="チャットID")
-    user_id: str = Field(..., description="ユーザーID")
-    title: str = Field(..., description="チャットのタイトル")
-    book_id: str | None = Field(None, description="関連する本のID")
-    created_at: datetime = Field(..., description="作成日時")
-    updated_at: datetime = Field(..., description="更新日時")
+    id: str = Field(..., description="Chat ID")
+    user_id: str = Field(..., description="User ID")
+    title: str = Field(..., description="Chat title")
+    book_id: str | None = Field(None, description="Related book ID")
+    created_at: datetime = Field(..., description="Creation date and time")
+    updated_at: datetime = Field(..., description="Update date and time")
 
 
 class ChatsResponse(BaseSchemaModel):
-    chats: list[ChatResponse] = Field(..., description="チャットリスト")
+    chats: list[ChatResponse] = Field(..., description="Chat list")

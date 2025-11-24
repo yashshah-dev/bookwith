@@ -54,11 +54,11 @@ class MessageRepositoryImpl(MessageRepository):
         return [message_orm.to_entity() for message_orm in message_orms]
 
     def find_latest_by_chat_id(self, chat_id: str, limit: int) -> list[Message]:
-        """チャットIDで最新のメッセージを指定件数取得する."""
+        """Get specified number of latest messages by chat ID."""
         message_orms = (
             self._session.query(MessageDTO)
             .filter(MessageDTO.chat_id == chat_id, MessageDTO.deleted_at == None)
-            .order_by(MessageDTO.created_at.desc())  # 新しい順（降順）
+            .order_by(MessageDTO.created_at.desc())  # Newest first (descending)
             .limit(limit)
             .all()
         )
@@ -118,7 +118,7 @@ class MessageRepositoryImpl(MessageRepository):
             raise e
 
     def count_by_chat_id(self, chat_id: str) -> int:
-        """チャットIDに関連するメッセージの数を取得する."""
+        """Get the number of messages associated with a chat ID."""
         try:
             count = self._session.query(func.count(MessageDTO.id)).filter(MessageDTO.chat_id == chat_id, MessageDTO.deleted_at == None).scalar()
             return count or 0
@@ -126,7 +126,7 @@ class MessageRepositoryImpl(MessageRepository):
             return 0
 
     def find_chat_ids_by_user_id(self, user_id: str) -> list[str]:
-        """ユーザーIDに関連するチャットIDを取得する."""
+        """Get chat IDs associated with a user ID."""
         try:
             chat_ids = self._session.query(MessageDTO.chat_id).filter(MessageDTO.sender_id == user_id, MessageDTO.deleted_at == None).distinct().all()
             return [chat_id[0] for chat_id in chat_ids]

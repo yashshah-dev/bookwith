@@ -35,7 +35,7 @@ export const PodcastDetail: React.FC<PodcastDetailProps> = memo(
       retryingPodcastId,
     } = usePodcastActions()
 
-    // ポッドキャストが存在しない場合
+    // If podcast doesn't exist
     if (!podcast) {
       return (
         <div className="flex flex-col">
@@ -59,8 +59,8 @@ export const PodcastDetail: React.FC<PodcastDetailProps> = memo(
                 if (!book) return
                 await createPodcast(book.id, book.name)
               }}
-              onPlayPodcast={() => {}}
-              onPodcastsLoaded={() => {}}
+              onPlayPodcast={() => { }}
+              onPodcastsLoaded={() => { }}
               onRetryPodcast={retryPodcastGeneration}
               retryingPodcastId={retryingPodcastId}
             />
@@ -69,7 +69,7 @@ export const PodcastDetail: React.FC<PodcastDetailProps> = memo(
       )
     }
 
-    // ポッドキャストが完了していない場合はBookPodcastItemを使用
+    // Use BookPodcastItem if podcast is not completed
     if (podcast.status !== 'COMPLETED') {
       return (
         <div className="flex flex-col">
@@ -94,8 +94,8 @@ export const PodcastDetail: React.FC<PodcastDetailProps> = memo(
                 if (!book) return
                 await createPodcast(book.id, book.name)
               }}
-              onPlayPodcast={() => {}}
-              onPodcastsLoaded={() => {}}
+              onPlayPodcast={() => { }}
+              onPodcastsLoaded={() => { }}
               onRetryPodcast={retryPodcastGeneration}
               retryingPodcastId={retryingPodcastId}
             />
@@ -104,7 +104,7 @@ export const PodcastDetail: React.FC<PodcastDetailProps> = memo(
       )
     }
 
-    // ポッドキャストが完了している場合は詳細UIを表示
+    // Display detailed UI if podcast is completed
     return (
       <div className="flex h-full flex-col overflow-hidden">
         <div className="space-y-4 overflow-y-auto px-4">
@@ -169,8 +169,8 @@ export const PodcastDetail: React.FC<PodcastDetailProps> = memo(
                 onPlay={() => {
                   reader.setPodcast(podcast)
                 }}
-                onPause={() => {}}
-                onEnd={() => {}}
+                onPause={() => { }}
+                onEnd={() => { }}
                 onTimeUpdate={setCurrentTime}
                 onSeek={(time) => {
                   if (window.podcastSeekFunction) {

@@ -14,12 +14,12 @@ class AnnotationId:
 
     @classmethod
     def new(cls) -> "AnnotationId":
-        """新しいIDを生成"""
+        """Generate a new ID"""
         return cls(str(uuid.uuid4()))
 
     @classmethod
     def from_string(cls, id_str: str | None) -> "AnnotationId":
-        """文字列からAnnotationIdを生成"""
+        """Generate AnnotationId from string"""
         if not id_str:
             return cls.new()
         return cls(id_str)

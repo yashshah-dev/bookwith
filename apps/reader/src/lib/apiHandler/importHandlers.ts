@@ -41,7 +41,7 @@ export async function addBook(
     const bookData = await createBook(bookRequest)
 
     if (!bookData) {
-      console.error('APIへの書籍登録に失敗しました')
+      console.error('Failed to register book with API')
       setLoading?.(undefined)
       return null
     }
@@ -51,7 +51,7 @@ export async function addBook(
     setLoading?.(undefined)
     return bookData
   } catch (error) {
-    console.error('書籍の登録中にエラーが発生しました:', error)
+    console.error('An error occurred during book registration:', error)
     setLoading?.(undefined)
     return null
   }

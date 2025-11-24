@@ -23,7 +23,7 @@ interface AudioPlayerCallbacks {
 }
 
 /**
- * オーディオプレイヤーのロジックを管理するカスタムフック
+ * Custom hook for managing audio player logic
  */
 export const useAudioPlayer = ({
   onPlay,
@@ -36,25 +36,25 @@ export const useAudioPlayer = ({
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false)
   const { podcast } = useReaderSnapshot()
 
-  // Valtio状態から値を取得
+  // Get values from Valtio state
   const { isPlaying, currentTime, duration, volume, playbackRate, error } =
     podcast as AudioPlayerState
 
-  // 音量の更新
+  // Update volume
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume
     }
   }, [volume])
 
-  // 再生速度の更新
+  // Update playback rate
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.playbackRate = playbackRate
     }
   }, [playbackRate])
 
-  // オーディオイベントの設定
+  // Set up audio events
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -90,7 +90,7 @@ export const useAudioPlayer = ({
       setIsMetadataLoaded(false)
     }
 
-    // イベントリスナーの登録
+    // Register event listeners
     audio.addEventListener(AUDIO_EVENTS.TIME_UPDATE, handleTimeUpdate)
     audio.addEventListener(AUDIO_EVENTS.LOADED_METADATA, handleLoadedMetadata)
     audio.addEventListener(AUDIO_EVENTS.ENDED, handleEnded)
@@ -111,7 +111,7 @@ export const useAudioPlayer = ({
     }
   }, [onEnd, onTimeUpdate])
 
-  // オーディオコントロールのフックを使用
+  // Use audio controls hook
   const controls = useAudioControls({
     audioRef,
     duration,
@@ -138,7 +138,7 @@ export const useAudioPlayer = ({
     onSpeedChange: (rate) => reader.setPodcastPlaybackRate(rate),
   })
 
-  // シーク処理（スライダー用）
+  // Seek handling (for slider)
   const handleSeek = useCallback((value: number[]) => {
     if (!audioRef.current) return
     const newTime = value[0]
@@ -148,7 +148,7 @@ export const useAudioPlayer = ({
     }
   }, [])
 
-  // 特定時間へのシーク（スクリプトクリック用）
+  // Seek to specific time (for script click)
   const seekToTime = useCallback(
     (time: number) => {
       if (!audioRef.current || !isMetadataLoaded) return

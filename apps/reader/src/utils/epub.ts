@@ -22,6 +22,6 @@ export const indexEpub = async (file: File, userId: string, bookId: string) => {
       }),
     })
   } catch (error) {
-    console.error('アップロード中のエラー:', error)
+    console.error('Upload error:', error)
   }
 }

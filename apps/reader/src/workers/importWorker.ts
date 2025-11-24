@@ -177,7 +177,7 @@ async function handleFilesWorker(files: File[]) {
       updateOverall()
     } catch (error: any) {
       console.error(
-        `Worker: ファイルのインポート中にエラーが発生しました (${file.name}): ${error}`,
+        `Worker: Error occurred during file import (${file.name}): ${error}`,
       )
       currentFileProgress(100) // Mark as completed even on error
       failedCount++

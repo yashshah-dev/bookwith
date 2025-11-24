@@ -7,15 +7,15 @@ from src.domain.message.repositories.message_repository import MessageRepository
 class FindMessagesUseCase(ABC):
     @abstractmethod
     def execute_find_all(self) -> list[Message]:
-        """全てのMessageを取得する"""
+        """Get all Messages"""
 
     @abstractmethod
     def execute_find_by_chat_id(self, chat_id: str) -> list[Message]:
-        """チャットIDでMessageを検索する"""
+        """Search Messages by chat ID"""
 
     @abstractmethod
     def execute_find_by_sender_id(self, sender_id: str) -> list[Message]:
-        """送信者IDでMessageを検索する"""
+        """Search Messages by sender ID"""
 
 
 class FindMessagesUseCaseImpl(FindMessagesUseCase):

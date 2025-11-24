@@ -19,7 +19,7 @@ class Chat(BaseModel):
     deleted_at: datetime | None = None
 
     class Config:
-        arbitrary_types_allowed = True  # Value Object を許容するため
+        arbitrary_types_allowed = True  # Allow Value Objects
 
     def __eq__(self, obj: object) -> bool:
         if isinstance(obj, Chat):
@@ -36,7 +36,7 @@ class Chat(BaseModel):
 
     @classmethod
     def create(cls, user_id: UserId, title: ChatTitle, book_id: BookId | None = None) -> "Chat":
-        # Pydanticがデフォルト値を処理するため、単純にインスタンス化する
+        # Pydantic handles default values, so simply instantiate
         return cls(
             user_id=user_id,
             title=title,

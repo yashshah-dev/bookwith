@@ -1,4 +1,4 @@
-"""チャット管理サービス."""
+"""Chat management service."""
 
 from textwrap import dedent
 
@@ -15,14 +15,14 @@ from src.domain.chat.value_objects.user_id import UserId
 
 
 class ChatManager:
-    """チャットの作成と管理を行うサービス."""
+    """Service for creating and managing chats."""
 
     def __init__(self, chat_repository: ChatRepository) -> None:
-        """チャット管理サービスの初期化."""
+        """Initialize chat management service."""
         self.chat_repository = chat_repository
 
     def ensure_chat_exists(self, chat_id: str, sender_id: str, book_id: str | None, content: str) -> None:
-        """チャットが存在することを確認し、存在しない場合は作成する."""
+        """Ensure chat exists, create if it doesn't."""
         chat_id_obj = ChatId(chat_id)
         chat = self.chat_repository.find_by_id(chat_id_obj)
 
@@ -32,7 +32,7 @@ class ChatManager:
             self.chat_repository.save(new_chat)
 
     def _generate_chat_title(self, question: str) -> str:
-        """初回質問からチャットタイトルを生成する."""
+        """Generate chat title from initial question."""
         prompt = ChatPromptTemplate.from_messages(
             [
                 (

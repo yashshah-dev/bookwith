@@ -1,4 +1,4 @@
-"""再試行デコレータユーティリティ."""
+"""Retry decorator utility."""
 
 import logging
 import time
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def retry_on_error(max_retries: int = 3, initial_delay: int = 1, backoff_factor: int = 2) -> Callable:
-    """エラー発生時に再試行するデコレータ."""
+    """Decorator that retries on error."""
 
     def decorator(func: Callable) -> Callable:
         @wraps(func)
@@ -23,9 +23,9 @@ def retry_on_error(max_retries: int = 3, initial_delay: int = 1, backoff_factor:
                 except Exception as e:
                     retries += 1
                     if retries > max_retries:
-                        logger.error(f"最大再試行回数 ({max_retries}) に達しました: {str(e)}")
+                        logger.error(f"Maximum retry count ({max_retries}) reached: {str(e)}")
                         raise
-                    logger.warning(f"操作失敗、{delay}秒後に再試行 ({retries}/{max_retries}): {str(e)}")
+                    logger.warning(f"Operation failed, retrying in {delay} seconds ({retries}/{max_retries}): {str(e)}")
                     time.sleep(delay)
                     delay *= backoff_factor
 

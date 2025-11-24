@@ -63,7 +63,7 @@ export const LibraryPodcastView: React.FC = () => {
     [retryPodcastGeneration],
   )
 
-  // 選択された本のポッドキャストを表示
+  // Display podcasts for selected book
   if (selectedBookId) {
     const podcasts = podcastsMap[selectedBookId] || []
     const selectedPodcast = podcasts.find(

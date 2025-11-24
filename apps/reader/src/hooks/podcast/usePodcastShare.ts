@@ -10,12 +10,12 @@ interface UsePodcastShareReturn {
 }
 
 /**
- * ポッドキャストのダウンロード・共有機能を管理するカスタムフック
+ * Custom hook to manage podcast download and sharing functionality
  */
 export const usePodcastShare = (): UsePodcastShareReturn => {
   const t = useTranslation()
 
-  // ブラウザ機能のサポート状況をチェック
+  // Check browser feature support status
   const isWebShareSupported =
     typeof navigator !== 'undefined' && 'share' in navigator
   const isClipboardSupported =
@@ -55,9 +55,9 @@ export const usePodcastShare = (): UsePodcastShareReturn => {
             url: audioUrl,
           })
         } catch (error) {
-          // ユーザーがキャンセルした場合もエラーになるが、その場合は何もしない
+          // User cancellation also throws an error, but in that case do nothing
           if (error instanceof Error && error.name !== 'AbortError') {
-            // キャンセル以外のエラーの場合はクリップボードにコピー
+            // For non-cancel errors, copy to clipboard
             if (isClipboardSupported) {
               await navigator.clipboard.writeText(audioUrl)
             }

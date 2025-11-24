@@ -21,7 +21,7 @@ export function GlobalLoadingOverlay() {
   const t = useTranslation('loading_overlay')
   const [mounted, setMounted] = useState(false)
 
-  // アクセシビリティ用の一意 ID
+  // Unique ID for accessibility
   const titleId = useId()
   const descId = useId()
 
@@ -29,7 +29,7 @@ export function GlobalLoadingOverlay() {
     setMounted(true)
   }, [])
 
-  // 進捗率計算
+  // Progress percentage calculation
   const percent = useMemo(() => {
     if (!primaryTask?.progress) return 0
     const { current, total } = primaryTask.progress
@@ -70,7 +70,7 @@ export function GlobalLoadingOverlay() {
                   tabIndex={-1}
                   aria-busy="true"
                 >
-                  {/* スクリーンリーダー向けタイトル */}
+                  {/* Title for screen readers */}
                   <h2 id={titleId} className="sr-only">
                     {t('loading')}
                   </h2>
@@ -120,11 +120,10 @@ export function GlobalLoadingOverlay() {
                           className="h-full rounded-full bg-blue-500"
                           initial={{ width: 0 }}
                           animate={{
-                            width: `${
-                              (primaryTask.progress.current /
+                            width: `${(primaryTask.progress.current /
                                 primaryTask.progress.total) *
                               100
-                            }%`,
+                              }%`,
                           }}
                           transition={{ duration: 0.2, ease: 'easeOut' }}
                         />
@@ -162,4 +161,4 @@ export function GlobalLoadingOverlay() {
   )
 }
 
-// Helpers（現在は未使用）
+// Helpers (currently unused)

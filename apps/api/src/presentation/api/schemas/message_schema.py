@@ -8,36 +8,36 @@ from src.presentation.api.schemas.base_schema import BaseSchemaModel
 
 
 class MessageBase(BaseSchemaModel):
-    """メッセージの基本モデル."""
+    """Base message model."""
 
-    content: str = Field(..., description="メッセージの内容")
-    chat_id: str = Field(..., description="メッセージが所属するチャットID")
+    content: str = Field(..., description="Message content")
+    chat_id: str = Field(..., description="Chat ID to which the message belongs")
 
 
 class MessageCreate(MessageBase):
-    """メッセージ作成リクエストモデル."""
+    """Message creation request model."""
 
-    sender_id: str = Field(..., description="送信者ID")
-    metadata: dict[str, Any] | None = Field(None, description="メッセージの追加情報")
-    book_id: str | None = Field(None, description="メッセージが所属するブックID")
+    sender_id: str = Field(..., description="Sender ID")
+    metadata: dict[str, Any] | None = Field(None, description="Additional message information")
+    book_id: str | None = Field(None, description="Book ID to which the message belongs")
 
 
 class MessageUpdate(BaseSchemaModel):
-    """メッセージ更新リクエストモデル."""
+    """Message update request model."""
 
-    content: str | None = Field(None, description="メッセージの内容")
-    sender_type: SenderTypeEnum | None = Field(None, description="送信者の種類")
-    metadata: dict[str, Any] | None = Field(None, description="メッセージの追加情報")
+    content: str | None = Field(None, description="Message content")
+    sender_type: SenderTypeEnum | None = Field(None, description="Sender type")
+    metadata: dict[str, Any] | None = Field(None, description="Additional message information")
 
 
 class MessageBulkDelete(BaseSchemaModel):
-    """複数メッセージ削除リクエストモデル."""
+    """Multiple message deletion request model."""
 
-    message_ids: list[str] = Field(..., description="削除するメッセージIDのリスト")
+    message_ids: list[str] = Field(..., description="List of message IDs to delete")
 
 
 class MessageResponse(BaseSchemaModel):
-    """メッセージレスポンスモデル."""
+    """Message response model."""
 
     id: str
     content: str
@@ -49,13 +49,13 @@ class MessageResponse(BaseSchemaModel):
 
 
 class MessageListResponse(BaseSchemaModel):
-    """メッセージリストレスポンスモデル."""
+    """Message list response model."""
 
     messages: list[MessageResponse]
     total: int
 
 
 class FailedMessageIdsResponse(BaseSchemaModel):
-    """失敗したメッセージIDレスポンスモデル."""
+    """Failed message ID response model."""
 
     failed_ids: list[str]

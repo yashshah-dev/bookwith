@@ -76,7 +76,7 @@ interface TimelineItem {
 }
 
 class BaseTab {
-  constructor(public readonly id: string, public readonly title = id) {}
+  constructor(public readonly id: string, public readonly title = id) { }
 
   get isBook(): boolean {
     return this instanceof BookTab
@@ -144,7 +144,7 @@ export class BookTab extends BaseTab {
       },
       body: JSON.stringify(changes),
     }).catch((error) => {
-      console.error('書籍の更新に失敗しました:', error)
+      console.error('Failed to update book:', error)
     })
   }
 
@@ -161,7 +161,7 @@ export class BookTab extends BaseTab {
         body: JSON.stringify(changes),
       },
     ).catch((error) => {
-      console.error('書籍の更新に失敗しました:', error)
+      console.error('Failed to update book:', error)
     })
   }
 

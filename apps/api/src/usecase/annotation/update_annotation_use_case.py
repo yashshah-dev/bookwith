@@ -9,7 +9,7 @@ from src.presentation.api.schemas.annotation_schema import AnnotationSchema
 
 
 class SyncAnnotationsUseCase(ABC):
-    """アノテーション保存ユースケースのインターフェース"""
+    """Interface for annotation saving use case"""
 
     @abstractmethod
     def execute(
@@ -17,11 +17,11 @@ class SyncAnnotationsUseCase(ABC):
         book_id: str,
         annotations: list[AnnotationSchema] | None = None,
     ) -> None:
-        """アノテーションを更新する"""
+        """Update annotations"""
 
 
 class SyncAnnotationsUseCaseImpl(SyncAnnotationsUseCase):
-    """アノテーション保存ユースケースの実装"""
+    """Implementation of annotation saving use case"""
 
     def __init__(
         self,
@@ -36,7 +36,7 @@ class SyncAnnotationsUseCaseImpl(SyncAnnotationsUseCase):
         book_id: str,
         annotations: list[AnnotationSchema] | None = None,
     ) -> None:
-        """アノテーションを更新する"""
+        """Update annotations"""
         book_id_obj = BookId(book_id)
         book = self.book_repository.find_by_id(book_id_obj)
 

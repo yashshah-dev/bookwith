@@ -28,7 +28,7 @@ async def stream_create_message(
     message_create: MessageCreate,
     create_message_usecase: CreateMessageUseCase = Depends(get_create_message_usecase),
 ) -> StreamingResponse:
-    """新しいメッセージを作成し、AI の応答をストリーミングで返す."""
+    """Create a new message and stream the AI response."""
     try:
         response_stream = create_message_usecase.execute(
             content=message_create.content,
@@ -47,10 +47,10 @@ async def stream_create_message(
 
 @router.get("/{chat_id}", response_model=MessageListResponse)
 async def get_messages_by_chat_id(
-    chat_id: str = Path(..., description="メッセージを検索するチャットID"),
+    chat_id: str = Path(..., description="Chat ID to search messages"),
     find_messages_usecase: FindMessagesUseCase = Depends(get_find_messages_usecase),
 ) -> MessageListResponse:
-    """チャットIDでメッセージを検索する."""
+    """Search messages by chat ID."""
     messages = find_messages_usecase.execute_find_by_chat_id(chat_id)
 
     return MessageListResponse(
@@ -72,10 +72,10 @@ async def get_messages_by_chat_id(
 
 @router.delete("/{message_id}", status_code=status.HTTP_200_OK)
 async def delete_message(
-    message_id: str = Path(..., description="削除するメッセージID"),
+    message_id: str = Path(..., description="Message ID to delete"),
     delete_message_usecase: DeleteMessageUseCase = Depends(get_delete_message_usecase),
 ) -> dict[str, str]:
-    """メッセージを削除する."""
+    """Delete a message."""
     try:
         delete_message_usecase.execute(message_id)
         return {"status": "success"}
@@ -96,7 +96,7 @@ async def bulk_delete_messages(
     message_bulk_delete: MessageBulkDelete,
     delete_message_usecase: DeleteMessageUseCase = Depends(get_delete_message_usecase),
 ) -> dict[str, list[str]]:
-    """複数のメッセージを一括削除する."""
+    """Bulk delete multiple messages."""
     try:
         failed_ids = delete_message_usecase.execute_bulk(message_bulk_delete.message_ids)
         return {"failed_ids": failed_ids}

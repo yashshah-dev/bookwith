@@ -41,7 +41,7 @@ class Book(BaseModel):
     annotations: list[Annotation] = Field(default_factory=list)
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True,  # Value Object を許容するため
+        arbitrary_types_allowed=True,  # Allow Value Objects
         json_encoders={
             BookId: lambda x: x.value,
             BookTitle: lambda x: x.value,
@@ -74,7 +74,7 @@ class Book(BaseModel):
         metadata_viewport: str | None = None,
         metadata_spread: str | None = None,
     ) -> "Book":
-        # Pydanticがデフォルト値を処理するため、ここでは単純にインスタンス化する
+        # Pydantic handles default values, so simply instantiate here
         return cls(
             id=id,
             name=name,

@@ -1,4 +1,4 @@
-"""ベクトル化サービス."""
+"""Vectorization service."""
 
 import logging
 from typing import Any
@@ -13,25 +13,25 @@ logger = logging.getLogger(__name__)
 
 
 class VectorizationService:
-    """テキストのベクトル化に特化したサービス."""
+    """Service specialized for text vectorization."""
 
     def __init__(self, memory_store: MemoryVectorStore | None = None) -> None:
-        """ベクトル化サービスの初期化."""
+        """Initialize vectorization service."""
         self.config = AppConfig.get_config()
         self.memory_store = memory_store or MemoryVectorStore()
 
     def vectorize_message(self, message: Message) -> None:
-        """メッセージを同期的にベクトル化.
+        """Vectorize message synchronously.
 
         Args:
-            message: ベクトル化するメッセージ
+            message: Message to vectorize
 
         """
         self._vectorize_message_background(message)
-        logger.debug(f"メッセージID {message.id.value} のベクトル化を実行")
+        logger.debug(f"Executing vectorization for message ID {message.id.value}")
 
     def _vectorize_message_background(self, message: Message) -> None:
-        """メッセージをベクトル化して保存する処理."""
+        """Process to vectorize and save message."""
         try:
             # メッセージの内容をベクトル化
             text = message.content.value
@@ -123,11 +123,11 @@ class VectorizationService:
         )
 
     def delete_book_memories(self, user_id: str, book_id: str) -> None:
-        """本に関連するすべての記憶を削除.
+        """Delete all memories related to a book.
 
         Args:
-            user_id: ユーザーID
-            book_id: 削除する本のID
+            user_id: User ID
+            book_id: ID of the book to delete
 
         """
         try:

@@ -1,4 +1,4 @@
-"""チャット記憶ストア."""
+"""Chat memory store."""
 
 import logging
 from typing import Any
@@ -13,26 +13,26 @@ logger = logging.getLogger(__name__)
 
 
 class ChatMemoryStore(BaseVectorStore):
-    """チャット記憶の検索と管理に特化したストア."""
+    """Store specialized for chat memory search and management."""
 
     def __init__(self) -> None:
-        """チャット記憶ストアの初期化."""
+        """Initialize chat memory store."""
         super().__init__()
 
     @retry_on_error(max_retries=3)
     def add_memory(self, vector: list[float], metadata: dict, user_id: str) -> str:
-        """チャット記憶をベクトルストアに追加."""
+        """Add chat memory to vector store."""
         try:
             collection = self.client.collections.get(self.CHAT_MEMORY_COLLECTION_NAME)
             inserted_id = collection.with_tenant(user_id).data.insert(properties=metadata, vector=vector)
             return str(inserted_id)
         except Exception as e:
-            logger.error(f"チャット記憶追加エラー: {str(e)}")
+            logger.error(f"Chat memory addition error: {str(e)}")
             raise
 
     @retry_on_error(max_retries=2)
     def mark_messages_as_summarized(self, user_id: str, chat_id: str, message_ids: list[str]) -> None:
-        """指定したメッセージを要約済みとしてマーク."""
+        """Mark specified messages as summarized."""
         if not message_ids:
             return
 
@@ -57,12 +57,12 @@ class ChatMemoryStore(BaseVectorStore):
                 collection_with_tenant.data.update(uuid=obj.uuid, properties={"is_summarized": True})
 
         except Exception as e:
-            logger.error(f"メッセージの要約済みマーク更新エラー (Tenant: {user_id}): {str(e)}")
+            logger.error(f"Error updating summarized mark for messages (Tenant: {user_id}): {str(e)}")
             raise
 
     @retry_on_error(max_retries=2)
     def search_chat_memories(self, user_id: str, chat_id: str, query_vector: list[float], limit: int = 5) -> list[dict[str, Any]]:
-        """チャットIDによる関連記憶のベクトル検索."""
+        """Vector search for related memories by chat ID."""
         collection = self.client.collections.get(self.CHAT_MEMORY_COLLECTION_NAME)
         collection_with_tenant = collection.with_tenant(user_id)
 
@@ -103,7 +103,7 @@ class ChatMemoryStore(BaseVectorStore):
 
     @retry_on_error(max_retries=2)
     def get_unsummarized_messages(self, user_id: str, chat_id: str, max_count: int = 100) -> list[dict[str, Any]]:
-        """要約されていないメッセージを取得."""
+        """Get unsummarized messages."""
         collection = self.client.collections.get(self.CHAT_MEMORY_COLLECTION_NAME)
         collection_with_tenant = collection.with_tenant(user_id)
 

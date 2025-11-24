@@ -5,10 +5,10 @@ import { cn } from '../lib/utils'
 
 import { Button as ShadcnButton } from './ui/button'
 
-// shadcn-uiのButtonを再エクスポートして既存コードとの互換性を保つ
+// Re-export shadcn-ui Button to maintain compatibility with existing code
 export const Button = ShadcnButton
 
-// IconButtonをshadcn-uiのButtonを使って実装
+// Implement IconButton using shadcn-ui Button
 interface IconButtonProps extends Omit<ComponentProps<typeof Button>, 'size'> {
   Icon: IconType
   size?: number

@@ -8,10 +8,10 @@ class BookId:
 
     def __post_init__(self) -> None:
         if not self.value:
-            raise ValueError("BookIdは必須です")
+            raise ValueError("BookId is required")
 
         if not self._is_valid_uuid(self.value):
-            raise ValueError("BookIdは有効なUUID形式である必要があります")
+            raise ValueError("BookId must be a valid UUID format")
 
     @staticmethod
     def _is_valid_uuid(val: str) -> bool:

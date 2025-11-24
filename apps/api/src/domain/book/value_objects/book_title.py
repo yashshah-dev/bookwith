@@ -7,6 +7,6 @@ class BookTitle:
 
     def __post_init__(self) -> None:
         if not self.value:
-            raise ValueError("タイトルは必須です")
+            raise ValueError("Title is required")
         if len(self.value) > 100:
-            raise ValueError("タイトルは100文字以下である必要があります")
+            raise ValueError("Title must be 100 characters or less")

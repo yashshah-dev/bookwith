@@ -1,4 +1,4 @@
-"""引用情報パーサー."""
+"""Citation information parser."""
 
 import logging
 import re
@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class CitationData(TypedDict):
-    """引用データの型定義."""
+    """Citation data type definition."""
 
     marker: str
     number: str
@@ -20,7 +20,7 @@ class CitationData(TypedDict):
 
 
 class CitationResult(TypedDict):
-    """引用抽出結果の型定義."""
+    """Citation extraction result type definition."""
 
     citations: list[CitationData]
     has_citations: bool
@@ -28,9 +28,9 @@ class CitationResult(TypedDict):
 
 
 class CitationParser:
-    """AIレスポンスから引用情報を抽出するパーサー."""
+    """Parser for extracting citation information from AI responses."""
 
-    # 上付き数字のマッピング
+    # Superscript number mapping
     SUPERSCRIPT_MAP = {
         "¹": "1",
         "²": "2",
@@ -43,34 +43,34 @@ class CitationParser:
         "⁹": "9",
     }
 
-    # 逆マッピング（数字から上付き文字へ）
+    # Reverse mapping (from number to superscript character)
     REVERSE_SUPERSCRIPT_MAP = {v: k for k, v in SUPERSCRIPT_MAP.items()}
 
     @classmethod
     def extract_citations(cls, text: str) -> CitationResult:
-        """テキストから引用情報を抽出する.
+        """Extract citation information from text.
 
         Args:
-            text: AIレスポンステキスト
+            text: AI response text
 
         Returns:
-            引用情報を含む辞書
+            Dictionary containing citation information
 
         """
         citations = []
 
-        # 本文中の上付き数字を検出
+        # Detect superscript numbers in the main text
         superscript_pattern = r"[¹²³⁴⁵⁶⁷⁸⁹]"
         markers_in_text = re.findall(superscript_pattern, text)
 
-        # 「参照箇所：」セクションを探す
+        # Look for "Reference Location:" section
         reference_section_match = re.search(r"参照箇所[：:]\s*\n((?:.*\n?)*)", text, re.MULTILINE)
 
         if reference_section_match:
             reference_section = reference_section_match.group(1)
 
-            # 各参照行をパース
-            # パターン: ¹ 第3章: タイトル（約25%の位置）
+            # Parse each reference line
+            # Pattern: ¹ Chapter 3: Title (about 25% position)
             reference_pattern = r"([¹²³⁴⁵⁶⁷⁸⁹])\s+([^（]+)（約(\d+(?:\.\d+)?)%の位置）"
 
             for match in re.finditer(reference_pattern, reference_section):
@@ -89,13 +89,13 @@ class CitationParser:
                         number=cls.SUPERSCRIPT_MAP.get(marker, "?"),
                         chapter=chapter_info,
                         position_percent=position_percent,
-                        cfi=None,  # 将来的にCFI情報を追加
+                        cfi=None,  # CFI information to be added in the future
                         location_info=None,
                         is_highlight=None,
                     )
                 )
 
-        # ハイライト引用も検出（★マーカー）
+        # Also detect highlight citations (★ marker)
         highlight_pattern = r"(★\d+)\s+([^（]+)（([^）]+)）"
 
         for match in re.finditer(highlight_pattern, text):
@@ -103,13 +103,13 @@ class CitationParser:
             chapter_info = match.group(2).strip()
             location_info = match.group(3)
 
-            # ハイライトの場合は位置情報が異なる可能性がある
+            # For highlights, position information may be different
             citations.append(
                 CitationData(
                     marker=marker,
-                    number=marker[1:],  # ★を除いた数字
+                    number=marker[1:],  # Number without ★
                     chapter=chapter_info,
-                    position_percent=None,  # ハイライトの場合は位置％がないかも
+                    position_percent=None,  # Highlights may not have position %
                     location_info=location_info,
                     is_highlight=True,
                     cfi=None,
@@ -124,19 +124,19 @@ class CitationParser:
 
     @classmethod
     def add_citation_links(cls, text: str, citations: list[CitationData]) -> str:
-        """テキスト内の引用マーカーをリンク可能な形式に変換する.
+        """Convert citation markers in text to linkable format.
 
-        フロントエンドで処理しやすいように、マーカーを特殊なタグで囲む。
+        Surround markers with special tags for easy frontend processing.
 
         Args:
-            text: 元のテキスト
-            citations: 引用情報のリスト
+            text: Original text
+            citations: List of citation information
 
         Returns:
-            マーカーがタグで囲まれたテキスト
+            Text with markers surrounded by tags
 
         """
-        # 型チェックを追加
+        # Add type checking
         if not isinstance(text, str):
             raise TypeError("text must be a string")
         if not isinstance(citations, list):
@@ -144,11 +144,11 @@ class CitationParser:
 
         result = text
 
-        # 引用マーカーをタグで囲む
+        # Surround citation markers with tags
         for citation in citations:
             marker = citation["marker"]
-            # 例: ¹ → <citation-link marker="¹" index="0">¹</citation-link>
-            # フロントエンドでこのタグを検出してリンクに変換する
+            # Example: ¹ → <citation-link marker="¹" index="0">¹</citation-link>
+            # Frontend will detect this tag and convert to links
             replacement = f'<citation-link marker="{marker}" number="{citation["number"]}">{marker}</citation-link>'
             result = result.replace(marker, replacement)
 

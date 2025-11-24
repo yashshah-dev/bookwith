@@ -3,7 +3,7 @@ import { PODCAST_ERROR_KEYS } from '../constants/podcast'
 import { PodcastResponse, PodcastStatus } from '../types/podcast'
 
 /**
- * 時間をMM:SS形式でフォーマット
+ * Format time in MM:SS format
  */
 export const formatTime = (time: number): string => {
   if (isNaN(time)) return '0:00'
@@ -13,7 +13,7 @@ export const formatTime = (time: number): string => {
 }
 
 /**
- * 再生速度オプションから指定された値のラベルを取得
+ * Get the label for the specified value from playback speed options
  */
 export const getSpeedLabel = (playbackRate: number): string => {
   const option = SPEED_OPTIONS.find((opt) => opt.value === playbackRate)
@@ -21,14 +21,14 @@ export const getSpeedLabel = (playbackRate: number): string => {
 }
 
 /**
- * 音量をパーセンテージでフォーマット
+ * Format volume as percentage
  */
 export const formatVolumePercentage = (volume: number): string => {
   return `${Math.round(volume * 100)}%`
 }
 
 /**
- * オーディオの現在位置をシーク
+ * Seek to audio position
  */
 export const seekAudio = (
   audioElement: HTMLAudioElement,
@@ -45,7 +45,7 @@ export const seekAudio = (
 }
 
 /**
- * 配列から指定した状態のポッドキャストを取得
+ * Get podcast with specified status from array
  */
 export const findPodcastByStatus = (
   podcasts: PodcastResponse[],
@@ -55,7 +55,7 @@ export const findPodcastByStatus = (
 }
 
 /**
- * エラータイプに基づいてエラーメッセージキーを取得
+ * Get error message key based on error type
  */
 export const getPodcastErrorKey = (error: unknown): string => {
   if (error instanceof Error) {

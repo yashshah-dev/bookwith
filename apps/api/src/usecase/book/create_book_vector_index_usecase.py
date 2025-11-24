@@ -8,7 +8,7 @@ from src.infrastructure.memory.memory_vector_store import MemoryVectorStore
 class CreateBookVectorIndexUseCase(ABC):
     @abstractmethod
     async def execute(self, file: UploadFile, user_id: str, book_id: str) -> dict:
-        """EPUBファイルを処理してベクトルストアにインデックス化する."""
+        """Process EPUB file and index it in vector store."""
 
 
 class CreateBookVectorIndexUseCaseImpl(CreateBookVectorIndexUseCase):

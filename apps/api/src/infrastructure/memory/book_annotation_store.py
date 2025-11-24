@@ -1,4 +1,4 @@
-"""書籍アノテーションストア."""
+"""Book annotation store."""
 
 import logging
 from typing import Any
@@ -12,29 +12,29 @@ logger = logging.getLogger(__name__)
 
 
 class BookAnnotationStore(BaseVectorStore):
-    """書籍アノテーション（ハイライト）の管理に特化したストア."""
+    """Store specialized for managing book annotations (highlights)."""
 
     def __init__(self) -> None:
-        """書籍アノテーションストアの初期化."""
+        """Initialize book annotation store."""
         super().__init__()
 
     @retry_on_error(max_retries=3)
     def add_annotation(self, vector: list[float], metadata: dict, user_id: str) -> str:
-        """アノテーションをベクトルストアに追加."""
+        """Add annotation to vector store."""
         try:
             collection = self.client.collections.get(self.BOOK_ANNOTATION_COLLECTION_NAME)
             inserted_id = collection.with_tenant(user_id).data.insert(properties=metadata, vector=vector)
             return str(inserted_id)
         except Exception as e:
-            logger.error(f"アノテーション追加エラー: {str(e)}")
+            logger.error(f"Annotation addition error: {str(e)}")
             raise
 
     @retry_on_error(max_retries=2)
     def search_highlights(self, user_id: str, book_id: str, query_vector: list[float], limit: int = 3) -> list[dict[str, Any]]:
-        """ハイライト（BookAnnotationコレクション）をベクトル検索する."""
+        """Vector search highlights (BookAnnotation collection)."""
         collection = self.client.collections.get(self.BOOK_ANNOTATION_COLLECTION_NAME)
 
-        # テナントが存在しない場合は作成
+        # Create tenant if it doesn't exist
         if not collection.tenants.exists(user_id):
             collection.tenants.create(user_id)
 
@@ -63,7 +63,7 @@ class BookAnnotationStore(BaseVectorStore):
 
     @retry_on_error(max_retries=2)
     def update_annotation(self, user_id: str, annotation_id: str, properties: dict, vector: list[float]) -> None:
-        """アノテーションを更新."""
+        """Update annotation."""
         try:
             collection = self.client.collections.get(self.BOOK_ANNOTATION_COLLECTION_NAME)
             collection_with_tenant = collection.with_tenant(user_id)
@@ -79,12 +79,12 @@ class BookAnnotationStore(BaseVectorStore):
                 logger.warning(f"Annotation {annotation_id} not found for user {user_id}")
 
         except Exception as e:
-            logger.error(f"アノテーション更新エラー: {str(e)}")
+            logger.error(f"Annotation update error: {str(e)}")
             raise
 
     @retry_on_error(max_retries=2)
     def delete_annotation(self, user_id: str, annotation_id: str) -> None:
-        """アノテーションを削除."""
+        """Delete annotation."""
         try:
             collection = self.client.collections.get(self.BOOK_ANNOTATION_COLLECTION_NAME)
             collection_with_tenant = collection.with_tenant(user_id)
@@ -93,12 +93,12 @@ class BookAnnotationStore(BaseVectorStore):
             logger.info(f"Deleted annotation {annotation_id} for user {user_id}")
 
         except Exception as e:
-            logger.error(f"アノテーション削除エラー: {str(e)}")
+            logger.error(f"Annotation deletion error: {str(e)}")
             raise
 
     @retry_on_error(max_retries=2)
     def delete_book_annotations(self, user_id: str, book_id: str) -> None:
-        """書籍のすべてのアノテーションを削除."""
+        """Delete all annotations for a book."""
         try:
             collection = self.client.collections.get(self.BOOK_ANNOTATION_COLLECTION_NAME)
             collection_with_tenant = collection.with_tenant(user_id)

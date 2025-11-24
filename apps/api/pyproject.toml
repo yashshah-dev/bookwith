@@ -30,6 +30,10 @@ google-generativeai = "^0.8.5"
 pydub = "^0.25.1"
 ebooklib = "^0.19"
 audioop-lts = "^0.2.1"
+huggingface-hub = "^0.26.0"
+sentence-transformers = "^3.3.1"
+langchain-huggingface = "^0.1.2"
+langchain-ollama = "^0.2.0"
 
 [tool.mypy]
 plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]

@@ -4,7 +4,7 @@ from src.domain.podcast.value_objects.language import PodcastLanguage
 
 
 def build_language_prompts(language: PodcastLanguage = PodcastLanguage.EN_US):
-    """言語ルールのみ返す"""
+    """Return only language rules"""
     language_instruction = ""
 
     # Correctly format language instruction based on the selected language
@@ -27,7 +27,7 @@ Important Rules:
 
 
 def _build_chapter_summary_prompt(language_rule: str) -> str:
-    """章の要約プロンプトを構築"""
+    """Build chapter summary prompt"""
     return f"""{language_rule}
 
 Please provide a concise and informative summary of the following book chapter.
@@ -41,7 +41,7 @@ Summary:
 
 
 def _build_book_summary_prompt(language_rule: str) -> str:
-    """本の要約プロンプトを構築"""
+    """Build book summary prompt"""
     return f"""{language_rule}
 
 Based on the following chapter summaries, create a comprehensive overview of the book "{{book_title}}".
@@ -56,7 +56,7 @@ Book Overview:
 
 
 def _build_system_prompt(language_rule: str) -> str:
-    """システムプロンプトを構築"""
+    """Build system prompt"""
     return f"""{language_rule}
 
 You are an expert podcast scriptwriter creating engaging, family-friendly dialogues about books.
@@ -75,7 +75,7 @@ Guidelines:
 
 
 def _build_script_prompt(language_rule: str) -> str:
-    """スクリプト生成プロンプトを構築"""
+    """Build script generation prompt"""
     return f"""{language_rule}
 
 Create a family-friendly podcast dialogue about "{{book_title}}" for approximately {{target_words}} words.

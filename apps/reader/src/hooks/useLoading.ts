@@ -10,8 +10,8 @@ import {
 export type UseLoadingOptions = UseTaskManagerOptions
 
 /**
- * ローディング状態を管理するための統合フック
- * 後方互換性のために従来のAPIを維持します
+ * Integrated hook for managing loading state
+ * Maintains traditional API for backward compatibility
  */
 export function useLoading(options?: UseLoadingOptions) {
   const currentTaskIdRef = useRef<string | null>(null)

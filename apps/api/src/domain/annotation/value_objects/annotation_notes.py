@@ -11,5 +11,5 @@ class AnnotationNotes:
 
     @classmethod
     def from_string(cls, notes_str: str | None) -> "AnnotationNotes":
-        """文字列からAnnotationNotesを生成"""
+        """Generate AnnotationNotes from string"""
         return cls(notes_str)

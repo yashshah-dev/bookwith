@@ -14,8 +14,8 @@ interface UsePodcastSelectionReturn {
 }
 
 /**
- * ポッドキャストの自動選択ロジックを管理するカスタムフック
- * 優先順位: 完了 > 処理中 > 失敗
+ * Custom hook to manage automatic podcast selection logic
+ * Priority: Completed > Processing > Failed
  */
 export const usePodcastSelection = ({
   podcasts,
@@ -24,32 +24,32 @@ export const usePodcastSelection = ({
   const [selectedPodcast, setSelectedPodcast] =
     useState<PodcastResponse | null>(null)
 
-  // 本が切り替わったときにselectedPodcastをリセット
+  // Reset selectedPodcast when book changes
   useEffect(() => {
     setSelectedPodcast(null)
   }, [bookId])
 
-  // 自動的に最初の利用可能なポッドキャストを選択
+  // Automatically select the first available podcast
   useEffect(() => {
     if (
       podcasts.length > 0 &&
       (!selectedPodcast || selectedPodcast.book_id !== bookId)
     ) {
-      // 完了したポッドキャストを優先
+      // Prioritize completed podcasts
       const completedPodcast = findPodcastByStatus(podcasts, 'COMPLETED')
       if (completedPodcast && completedPodcast.audio_url) {
         setSelectedPodcast(completedPodcast)
         return
       }
 
-      // 処理中のポッドキャストがあれば選択
+      // Select processing podcast if available
       const processingPodcast = findPodcastByStatus(podcasts, 'PROCESSING')
       if (processingPodcast) {
         setSelectedPodcast(processingPodcast)
         return
       }
 
-      // 失敗したポッドキャストがあれば選択
+      // Select failed podcast if available
       const failedPodcast = findPodcastByStatus(podcasts, 'FAILED')
       if (failedPodcast) {
         setSelectedPodcast(failedPodcast)

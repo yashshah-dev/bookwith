@@ -16,17 +16,17 @@ class AnnotationType:
 
     @classmethod
     def highlight(cls) -> "AnnotationType":
-        """ハイライトタイプのアノテーションを作成"""
+        """Create a highlight type annotation"""
         return cls(AnnotationTypeEnum.HIGHLIGHT.value)
 
     @classmethod
     def default(cls) -> "AnnotationType":
-        """デフォルトタイプのアノテーションを作成"""
+        """Create a default type annotation"""
         return cls.highlight()
 
     @classmethod
     def from_string(cls, type_str: str | None) -> "AnnotationType":
-        """文字列からAnnotationTypeを生成"""
+        """Generate AnnotationType from string"""
         if not type_str:
             return cls.default()
         return cls(type_str)

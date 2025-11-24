@@ -8,12 +8,12 @@ import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-// __dirname の代替
+// Alternative to __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default tseslint.config(
-  // 0. グローバルな無視設定
+  // 0. Global ignore settings
   {
     ignores: [
       'node_modules/',
@@ -26,7 +26,7 @@ export default tseslint.config(
     ],
   },
 
-  // 1. 基本設定: ESLint推奨 + TypeScript推奨 + Node/Browserグローバル + カスタムルール
+  // 1. Basic settings: ESLint recommended + TypeScript recommended + Node/Browser globals + custom rules
   {
     files: ['**/*.ts', '**/*.tsx'],
     extends: [
@@ -48,7 +48,7 @@ export default tseslint.config(
       import: importPlugin,
     },
     rules: {
-      // --- TypeScript カスタムルール ---
+      // --- TypeScript custom rules ---
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-var-requires': 'off',
@@ -58,7 +58,7 @@ export default tseslint.config(
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
 
-      // --- import/order ルール (TSファイル内) ---
+      // --- import/order rules (within TS files) ---
       'import/order': [
         'error', // Severity
         {       // Options
@@ -71,7 +71,7 @@ export default tseslint.config(
       ],
       'import/no-anonymous-default-export': 'off',
 
-      // --- その他のカスタムルール (TSファイル内) ---
+      // --- Other custom rules (within TS files) ---
       'no-empty': 'off',
     },
     settings: {
@@ -79,7 +79,7 @@ export default tseslint.config(
     },
   },
 
-  // 2. JavaScript ファイル用の基本設定
+  // 2. Basic settings for JavaScript files
   {
     files: ['**/*.{js,mjs,cjs}'],
     languageOptions: {
@@ -91,11 +91,11 @@ export default tseslint.config(
       import: importPlugin,
     },
     rules: {
-      // --- import/order ルール (JSファイル内) ---
-      // ***** ここを修正しました *****
+      // --- import/order rules (within JS files) ---
+      // ***** Modified here *****
       'import/order': [
         'error', // Severity
-        {       // Options (TSファイル用と同じ設定をコピー)
+        {       // Options (copy same settings as TS files)
           alphabetize: { order: 'asc' },
           'newlines-between': 'always',
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
@@ -103,7 +103,7 @@ export default tseslint.config(
           pathGroupsExcludedImportTypes: ['builtin'],
         },
       ],
-      // ***** 修正ここまで *****
+      // ***** End of modifications *****
       'import/no-anonymous-default-export': 'off',
       'no-empty': 'off',
     },
@@ -112,7 +112,7 @@ export default tseslint.config(
     },
   },
 
-  // 3. Next.js 用の設定
+  // 3. Settings for Next.js
   {
     files: ['apps/reader/**/*.{js,jsx,ts,tsx}'],
     plugins: {
@@ -129,6 +129,6 @@ export default tseslint.config(
     },
   },
 
-  // 4. Prettier 連携 (必ず最後に記述)
+  // 4. Prettier integration (must be described last)
   prettierConfig,
 );

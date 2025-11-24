@@ -23,7 +23,7 @@ interface AudioControls {
 }
 
 /**
- * オーディオコントロールのロジックを管理するカスタムフック
+ * Custom hook to manage audio controls logic
  */
 export const useAudioControls = ({
   audioRef,
@@ -111,7 +111,7 @@ export const useAudioControls = ({
 }
 
 /**
- * キーボードショートカットを処理するフック
+ * Hook to handle keyboard shortcuts
  */
 export const useAudioKeyboardShortcuts = (
   controls: AudioControls,

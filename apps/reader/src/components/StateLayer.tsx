@@ -23,7 +23,7 @@ export const StateLayer = () => {
   const hovered = useHover(parent)
   const pressed = usePress(parent)
 
-  // イベントリスナーの設定を修正
+  // Fix event listener setup
   useEventListener(
     () => parent.current,
     'mousedown',

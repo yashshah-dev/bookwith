@@ -21,7 +21,7 @@ export interface UsePodcastActionsReturn {
 }
 
 /**
- * ポッドキャストの作成・再試行アクションを管理するカスタムフック
+ * Custom hook for managing podcast creation and retry actions
  */
 export const usePodcastActions = (): UsePodcastActionsReturn => {
   const t = useTranslation()
@@ -33,7 +33,7 @@ export const usePodcastActions = (): UsePodcastActionsReturn => {
   const { setError, clearError } = usePodcastError()
 
   /**
-   * 成功通知
+   * Success notification
    */
   const notifySuccess = (operation: 'create' | 'retry'): void => {
     const successKey = {

@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { updateTaskAtom, LoadingTask } from '../../store/loading'
 
 /**
- * プログレス管理を担当するフック
+ * Hook responsible for progress management
  */
 export function useProgressManager(getCurrentTaskId: () => string | null) {
   const updateTask = useSetAtom(updateTaskAtom)

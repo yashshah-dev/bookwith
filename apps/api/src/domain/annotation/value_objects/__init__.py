@@ -1,1 +1,1 @@
-"""アノテーション値オブジェクトモジュール"""
+"""Annotation value objects module"""

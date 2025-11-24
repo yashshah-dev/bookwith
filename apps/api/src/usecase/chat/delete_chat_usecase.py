@@ -8,7 +8,7 @@ from src.domain.chat.value_objects.chat_id import ChatId
 class DeleteChatUseCase(ABC):
     @abstractmethod
     def execute(self, chat_id: ChatId) -> None:
-        """Chatを削除する"""
+        """Delete a chat."""
 
 
 class DeleteChatUseCaseImpl(DeleteChatUseCase):
@@ -16,7 +16,7 @@ class DeleteChatUseCaseImpl(DeleteChatUseCase):
         self.chat_repository = chat_repository
 
     def execute(self, chat_id: ChatId) -> None:
-        """Chatを削除する"""
+        """Delete a chat."""
         chat = self.chat_repository.find_by_id(chat_id)
         if chat is None:
             raise ChatNotFoundError(f"Chat with ID {chat_id.value} not found")

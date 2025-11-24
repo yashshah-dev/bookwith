@@ -1,4 +1,4 @@
-"""メッセージ作成ユースケース."""
+"""Message creation use case."""
 
 from abc import ABC, abstractmethod
 from collections.abc import AsyncGenerator
@@ -13,7 +13,7 @@ from src.usecase.message.message_processor import MessageProcessor
 
 
 class CreateMessageUseCase(ABC):
-    """メッセージ作成ユースケースの抽象基底クラス."""
+    """Abstract base class for message creation use case."""
 
     @abstractmethod
     def execute(
@@ -24,13 +24,13 @@ class CreateMessageUseCase(ABC):
         book_id: str | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> AsyncGenerator[str]:
-        """ユーザーメッセージを保存し、AIの応答をストリーミングで返す."""
+        """Save user message and stream AI response."""
 
 
 class CreateMessageUseCaseImpl(CreateMessageUseCase):
-    """メッセージ作成ユースケースの実装クラス.
+    """Implementation class for message creation use case.
 
-    各種サービスに責務を分離し、シンプルなオーケストレーションを行う。
+    Separates responsibilities across various services for simple orchestration.
     """
 
     def __init__(
@@ -39,7 +39,7 @@ class CreateMessageUseCaseImpl(CreateMessageUseCase):
         chat_repository: ChatRepository,
         memory_service: MemoryService,
     ) -> None:
-        """メッセージ作成ユースケースの初期化."""
+        """Initialize message creation use case."""
         self.message_repository = message_repository
         self.chat_repository = chat_repository
         self.memory_service = memory_service
@@ -56,7 +56,7 @@ class CreateMessageUseCaseImpl(CreateMessageUseCase):
         book_id: str | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> AsyncGenerator[str]:
-        """ユーザーメッセージを保存し、AIの応答をストリーミングで返す."""
+        """Save user message and stream AI response."""
         self.chat_manager.ensure_chat_exists(chat_id, sender_id, book_id, content)
 
         self.message_processor.save_user_message(content, sender_id, chat_id, metadata)

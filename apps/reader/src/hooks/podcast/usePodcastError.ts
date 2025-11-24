@@ -12,7 +12,7 @@ interface UsePodcastErrorReturn {
 }
 
 /**
- * ポッドキャストコンポーネントでのエラーハンドリングを管理するフック
+ * Hook for managing error handling in podcast components
  */
 export const usePodcastError = (): UsePodcastErrorReturn => {
   const t = useTranslation()
@@ -42,7 +42,7 @@ export const usePodcastError = (): UsePodcastErrorReturn => {
       const message = getErrorMessage(errorKey)
       setErrorState(message)
 
-      // コンソールにエラーをログ出力
+      // Log error to console
       console.error('[Podcast Error]', error)
     },
     [getErrorMessage],

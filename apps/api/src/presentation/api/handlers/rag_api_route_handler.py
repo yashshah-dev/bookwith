@@ -20,7 +20,7 @@ async def upload_and_process_rag(
     request: RagProcessRequest,
     usecase: CreateBookVectorIndexUseCase = Depends(get_create_book_vector_index_usecase),
 ):
-    """Base64 で送られてきた EPUB をデコードし、ベクトルストアにインデックス化する."""
+    """Decode Base64 EPUB file and index it in the vector store."""
     try:
         decoded_bytes = base64.b64decode(request.file_data)
         file_like = BytesIO(decoded_bytes)

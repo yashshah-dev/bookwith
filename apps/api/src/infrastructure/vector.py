@@ -4,10 +4,10 @@ from src.infrastructure.memory.memory_vector_store import MemoryVectorStore
 
 
 def get_book_content_vector_store() -> WeaviateVectorStore:
-    """BookContent 用の VectorStore を取得する.
+    """Get VectorStore for BookContent.
 
-    MemoryVectorStore で生成済みの共有クライアント／Embedding を再利用し、
-    不要なコネクションやモデルの重複ロードを防ぐ。
+    Reuse the shared client/Embedding already created in MemoryVectorStore,
+    preventing unnecessary connections or duplicate model loading.
     """
     try:
         return WeaviateVectorStore(

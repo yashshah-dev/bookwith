@@ -10,7 +10,7 @@ from src.domain.chat.value_objects.user_id import UserId
 class CreateChatUseCase(ABC):
     @abstractmethod
     def execute(self, user_id: UserId, title: ChatTitle, book_id: BookId | None = None) -> Chat:
-        """新しいChatを作成する."""
+        """Create a new Chat."""
 
 
 class CreateChatUseCaseImpl(CreateChatUseCase):
@@ -18,7 +18,7 @@ class CreateChatUseCaseImpl(CreateChatUseCase):
         self.chat_repository = chat_repository
 
     def execute(self, user_id: UserId, title: ChatTitle, book_id: BookId | None = None) -> Chat:
-        """新しいChatを作成する."""
+        """Create a new Chat."""
         chat = Chat.create(user_id=user_id, title=title, book_id=book_id)
         self.chat_repository.save(chat)
         return chat

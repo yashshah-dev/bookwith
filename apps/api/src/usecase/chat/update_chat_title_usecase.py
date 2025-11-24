@@ -9,7 +9,7 @@ from src.domain.chat.value_objects.chat_title import ChatTitle
 class UpdateChatTitleUseCase(ABC):
     @abstractmethod
     def execute(self, chat_id: ChatId, title: ChatTitle) -> None:
-        """Chatのタイトルを更新する"""
+        """Update the chat title."""
 
 
 class UpdateChatTitleUseCaseImpl(UpdateChatTitleUseCase):
@@ -17,7 +17,7 @@ class UpdateChatTitleUseCaseImpl(UpdateChatTitleUseCase):
         self.chat_repository = chat_repository
 
     def execute(self, chat_id: ChatId, title: ChatTitle) -> None:
-        """Chatのタイトルを更新する"""
+        """Update the chat title."""
         chat = self.chat_repository.find_by_id(chat_id)
         if chat is None:
             raise ChatNotFoundError(f"Chat with ID {chat_id.value} not found")

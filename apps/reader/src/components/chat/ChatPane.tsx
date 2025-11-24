@@ -69,34 +69,50 @@ export const ChatPane: React.FC<ChatPaneProps> = ({
     scrollToBottom()
   }, [messages, scrollToBottom])
 
-  // チャットがまだ DB に保存される前 (POST /messages 直後) は 404 になる可能性がある。
-  // 404 が返った場合は指数バックオフ付きで最大 5 回リトライする。
+  // The chat may return 404 before it's saved to DB (right after POST /messages).
+  // If 404 is returned, retry up to 5 times with exponential backoff.
   useEffect(() => {
     if (!chatId || isLoading || messages.length === 0) return
 
     let cancelled = false
 
-    ;(async () => {
-      for (let retry = 0; retry < 5; retry++) {
-        try {
-          const res = await apiClient<ChatResponse>(`/chats/${chatId}`)
-          if (res.title && !cancelled) setChatTitle(res.title)
-          return
-        } catch (err) {
-          const isNotFound =
-            err instanceof Error &&
-            err.message.includes('チャットが見つかりません')
-          if (!isNotFound) {
-            console.error('Failed to fetch chat title:', err)
-            return
-          }
-          await new Promise((r) => setTimeout(r, 2 ** retry * 300))
-        }
+    // Temporarily suppress console errors for expected 404s during chat creation
+    const originalError = console.error
+    const suppressChatNotFoundErrors = (...args: any[]) => {
+      const message = args.join(' ')
+      if (message.includes('API Request Failed: /chats/') &&
+        message.includes('Chat not found')) {
+        return // Silently ignore expected chat-not-found errors
       }
-    })()
+      originalError.apply(console, args)
+    }
+    console.error = suppressChatNotFoundErrors
+
+      ; (async () => {
+        for (let retry = 0; retry < 5; retry++) {
+          try {
+            const res = await apiClient<ChatResponse>(`/chats/${chatId}`)
+            if (res.title && !cancelled) setChatTitle(res.title)
+            return
+          } catch (err) {
+            const isNotFound =
+              err instanceof Error &&
+              err.message.includes('Chat not found')
+            if (!isNotFound) {
+              return
+            }
+            await new Promise((r) => setTimeout(r, 2 ** retry * 300))
+          }
+        }
+        // After all retries, silently continue - chat will be created on first message
+      })().finally(() => {
+        // Restore original console.error
+        console.error = originalError
+      })
 
     return () => {
       cancelled = true
+      console.error = originalError
     }
   }, [chatId, isLoading, messages.length])
 
@@ -132,6 +148,15 @@ export const ChatPane: React.FC<ChatPaneProps> = ({
 
       const trimmedText = text.trim()
 
+      // Ensure we have a consistent chat ID for this conversation
+      const currentChatId = chatId
+
+      console.log('Sending message:', {
+        chatId: currentChatId,
+        text: trimmedText.substring(0, 50),
+        bookId: focusedBookTab?.book.id
+      })
+
       setMessages((prev) => [
         ...prev,
         { senderType: 'user', text: trimmedText },
@@ -142,26 +167,41 @@ export const ChatPane: React.FC<ChatPaneProps> = ({
       setMessages((prev) => [...prev, { senderType: 'assistant', text: '' }])
 
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/messages`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              content: trimmedText,
-              chat_id: chatId || uuidv4(),
-              sender_id: TEST_USER_ID,
-              book_id: focusedBookTab?.book.id,
-              metadata: {},
-            }),
-          },
-        )
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/messages`
+        console.log('Posting to:', apiUrl)
 
-        if (!response.ok || !response.body) throw new Error(t('chat.error'))
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: trimmedText,
+            chat_id: currentChatId,
+            sender_id: TEST_USER_ID,
+            book_id: focusedBookTab?.book.id || null,
+            metadata: {},
+          }),
+        })
 
+        console.log('Response status:', response.status, response.statusText)
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error('Message API error:', response.status, errorText)
+          throw new Error(`API Error: ${response.status} - ${errorText}`)
+        }
+
+        if (!response.body) {
+          console.error('No response body received')
+          throw new Error('No response body')
+        }
+
+        console.log('Starting to process stream...')
         await processStream(response.body)
-      } catch {
-        updateAssistantMessage(t('chat.error'))
+        console.log('Stream processed successfully')
+      } catch (err) {
+        console.error('Chat send error:', err)
+        const errorMsg = err instanceof Error ? err.message : t('chat.error')
+        updateAssistantMessage(`❌ ${errorMsg}`)
       } finally {
         setIsLoading(false)
       }

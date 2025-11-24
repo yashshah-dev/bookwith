@@ -5,14 +5,14 @@ import { components } from '../../lib/openapi-schema/schema'
 import { fetcher } from './fetcher'
 
 /**
- * ユーザーIDに紐づくチャット一覧を取得するSWRフック
- * @param userId ユーザーID (null の場合は fetch しない)
+ * SWR hook to get chat list associated with user ID
+ * @param userId User ID (does not fetch if null)
  */
 export const useGetUserChats = (userId: string | null) => {
   const { data, error, isValidating, mutate } = useSWR<
     components['schemas']['ChatsResponse']
   >(
-    // userId が null でない場合のみ fetch する
+    // Only fetch when userId is not null
     userId
       ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/user/${userId}`
       : null,
@@ -28,8 +28,8 @@ export const useGetUserChats = (userId: string | null) => {
 }
 
 /**
- * チャットIDに紐づくメッセージ一覧を取得するSWRフック
- * @param chatId チャットID (null の場合は fetch しない)
+ * SWR hook to get message list associated with chat ID
+ * @param chatId Chat ID (does not fetch if null)
  */
 export const useGetChatMessages = (chatId: string | null) => {
   const { data, error, isValidating, mutate } = useSWR<

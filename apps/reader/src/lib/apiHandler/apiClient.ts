@@ -74,7 +74,12 @@ export async function apiClient<T>(
       } catch {
         errorData.responseBody = await response.text()
       }
-      console.error(`API Error (${response.status}): ${endpoint}`, errorData)
+
+      // Only log non-404 errors, as 404s on /chats/ are expected during chat creation
+      const is404OnChat = response.status === 404 && endpoint.includes('/chats/')
+      if (!is404OnChat) {
+        console.error(`API Error (${response.status}): ${endpoint}`, errorData)
+      }
 
       throw new Error(
         typeof errorData === 'string'
@@ -109,7 +114,13 @@ export async function apiClient<T>(
     )
     return responseData as T
   } catch (error) {
-    console.error(`API Request Failed: ${endpoint}`, error)
+    // Only log unexpected errors, not 404s on chat endpoints
+    const is404OnChat = error instanceof Error &&
+      error.message.includes('404') &&
+      endpoint.includes('/chats/')
+    if (!is404OnChat) {
+      console.error(`API Request Failed: ${endpoint}`, error)
+    }
 
     if (error instanceof Error) {
       throw error

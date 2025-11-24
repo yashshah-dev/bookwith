@@ -26,7 +26,7 @@ class Annotation(BaseModel):
     updated_at: datetime | None = None
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True,  # Value Object を許容するため
+        arbitrary_types_allowed=True,  # Allow Value Objects
         json_encoders={
             AnnotationId: lambda x: x.value,
             AnnotationCfi: lambda x: x.value,
@@ -87,7 +87,7 @@ class Annotation(BaseModel):
     @field_validator("spine", mode="before")
     @classmethod
     def _validate_spine(cls, v: Any) -> dict[str, Any]:  # noqa: ANN401
-        # dict 型ならそのまま。必要なら更に検証を追加
+        # If it's a dict type, use as is. Add further validation if needed
         if isinstance(v, dict):
             return v
         raise TypeError("spine must be a dict")

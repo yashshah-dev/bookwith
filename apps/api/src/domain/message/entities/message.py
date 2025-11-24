@@ -15,15 +15,15 @@ class Message(BaseModel):
     id: MessageId = Field(default_factory=MessageId.generate)
     content: MessageContent
     sender_type: SenderType
-    chat_id: str  # これはValueObjectにするべきかもしれないが、今回はそのまま
-    sender_id: str  # これもValueObjectにするべきかもしれないが、今回はそのまま
+    chat_id: str  # Could be ValueObject, but keeping as string for now
+    sender_id: str  # Could also be ValueObject, but keeping as string for now
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
     deleted_at: datetime | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
 
     class Config:
-        arbitrary_types_allowed = True  # Value Object を許容するため
+        arbitrary_types_allowed = True  # Allow Value Objects
 
     @classmethod
     def create(
@@ -34,7 +34,7 @@ class Message(BaseModel):
         sender_id: str,
         metadata: dict[str, Any] | None = None,
     ) -> "Message":
-        # Pydanticがデフォルト値を処理するため、単純にインスタンス化する
+        # Pydantic handles default values, so simply instantiate
         return cls(
             content=content,
             sender_type=sender_type,

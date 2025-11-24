@@ -106,7 +106,7 @@ async def get_covers(
 
             path = book.cover_path.replace(f"{gcs_client.get_gcs_url()}/{gcs_client.bucket_name}/", "")
 
-            # 署名付きURLを生成
+            # Generate signed URL
             bucket = gcs_client.get_client().bucket(gcs_client.bucket_name)
             blob = bucket.blob(path)
             cover_url = blob.generate_signed_url(version="v4", expiration=3600, method="GET") if not gcs_client.use_emulator else book.cover_path

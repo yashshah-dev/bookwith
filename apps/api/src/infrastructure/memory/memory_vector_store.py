@@ -1,4 +1,4 @@
-"""統合ベクトルストア管理クラス."""
+"""Integrated vector store management class."""
 
 import logging
 from typing import Any
@@ -18,71 +18,71 @@ logger = logging.getLogger(__name__)
 
 
 class MemoryVectorStore(BaseVectorStore):
-    """チャット記憶、書籍コンテンツ、アノテーションのベクトルストア統合管理クラス.
+    """Integrated vector store management class for chat memory, book content, and annotations.
 
-    各専門サービスの機能を統合し、既存のインターフェースを維持する。
+    Integrates functions of each specialized service while maintaining existing interfaces.
     """
 
     def __init__(self) -> None:
-        """ベクトルストア統合管理クラスの初期化."""
+        """Initialize vector store integrated management class."""
         super().__init__()
 
-        # コレクションの初期化
+        # Initialize collections
         self.collection_manager = CollectionManager()
 
-        # 各専門サービスを初期化
+        # Initialize each specialized service
         self.chat_memory = ChatMemoryStore()
         self.book_content = BookContentStore()
         self.book_annotation = BookAnnotationStore()
         self.crud_service = VectorCrudService()
 
-    # チャット記憶関連のメソッド（ChatMemoryStoreに委譲）
+    # Chat memory related methods (delegated to ChatMemoryStore)
     def search_chat_memories(self, user_id: str, chat_id: str, query_vector: list[float], limit: int = 5) -> list[dict[str, Any]]:
-        """チャットIDによる関連記憶のベクトル検索."""
+        """Vector search for related memories by chat ID."""
         return self.chat_memory.search_chat_memories(user_id, chat_id, query_vector, limit)
 
     def get_unsummarized_messages(self, user_id: str, chat_id: str, max_count: int = 100) -> list[dict[str, Any]]:
-        """要約されていないメッセージを取得."""
+        """Get unsummarized messages."""
         return self.chat_memory.get_unsummarized_messages(user_id, chat_id, max_count)
 
     def mark_messages_as_summarized(self, user_id: str, chat_id: str, message_ids: list[str]) -> None:
-        """指定したメッセージを要約済みとしてマーク."""
+        """Mark specified messages as summarized."""
         self.chat_memory.mark_messages_as_summarized(user_id, chat_id, message_ids)
 
-    # 書籍コンテンツ関連のメソッド（BookContentStoreに委譲）
+    # Book content related methods (delegated to BookContentStore)
     async def create_book_vector_index(self, file: UploadFile, user_id: str, book_id: str) -> dict:
-        """EPUBファイルを処理してBookContentコレクションにベクトルインデックス化する."""
+        """Process EPUB file and vector index it in BookContent collection."""
         return await self.book_content.create_book_vector_index(file, user_id, book_id)
 
-    # アノテーション関連のメソッド（BookAnnotationStoreに委譲）
+    # Annotation related methods (delegated to BookAnnotationStore)
     def search_highlights(self, user_id: str, book_id: str, query_vector: list[float], limit: int = 3) -> list[dict[str, Any]]:
-        """ハイライト（BookAnnotationコレクション）をベクトル検索する."""
+        """Vector search highlights (BookAnnotation collection)."""
         return self.book_annotation.search_highlights(user_id, book_id, query_vector, limit)
 
-    # CRUD操作（VectorCrudServiceに委譲）
+    # CRUD operations (delegated to VectorCrudService)
     def add_memory(self, vector: list[float], metadata: dict, user_id: str, collection_name: str) -> str:
-        """記憶を適切なベクトルストアコレクションに追加."""
+        """Add memory to appropriate vector store collection."""
         return self.crud_service.add_memory(vector, metadata, user_id, collection_name)
 
     def delete_memory(self, user_id: str, collection_name: str, target: str, key: str) -> None:
-        """メモリを削除."""
+        """Delete memory."""
         self.crud_service.delete_memory(user_id, collection_name, target, key)
 
     def update_memory(self, user_id: str, collection_name: str, target: str, key: str, properties: dict, vector: list[float]) -> None:
-        """メモリを更新."""
+        """Update memory."""
         self.crud_service.update_memory(user_id, collection_name, target, key, properties, vector)
 
     def delete_book_data(self, user_id: str, book_id: str) -> None:
-        """本に関連するすべてのベクターデータを削除."""
+        """Delete all vector data related to a book."""
         self.crud_service.delete_book_data(user_id, book_id)
 
-    # 後方互換性のためのクラスメソッド（BaseVectorStoreから継承）
+    # Class methods for backward compatibility (inherited from BaseVectorStore)
     @classmethod
     def get_client(cls) -> weaviate.WeaviateClient:
-        """共有の Weaviate クライアントを返す."""
+        """Return shared Weaviate client."""
         return super().get_client()
 
     @classmethod
     def get_embedding_model(cls) -> OpenAIEmbeddings:
-        """共有の Embedding モデルを返す."""
+        """Return shared embedding model."""
         return super().get_embedding_model()

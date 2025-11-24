@@ -27,7 +27,7 @@ export const AudioControls = memo<AudioControlsProps>(
   }) => {
     const t = useTranslation()
 
-    // 長押し対応
+    // Long press support
     const longPressBack = useLongPress(onSkipBack)
     const longPressForward = useLongPress(onSkipForward)
 

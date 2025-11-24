@@ -39,7 +39,7 @@ async def create_chat(
     request: ChatCreateRequest,
     create_chat_usecase: CreateChatUseCase = Depends(get_create_chat_usecase),
 ):
-    """チャットを作成する."""
+    """Create a chat."""
     try:
         user_id = UserId(value=request.user_id)
         title = ChatTitle(value=request.title or "Untitled")
@@ -76,7 +76,7 @@ async def get_chat_by_id(
     chat_id: str,
     find_chat_by_id_usecase: FindChatByIdUseCase = Depends(get_find_chat_by_id_usecase),
 ):
-    """IDでチャットを取得する."""
+    """Get a chat by ID."""
     try:
         chat = find_chat_by_id_usecase.execute(ChatId(value=chat_id))
 
@@ -105,7 +105,7 @@ async def get_chats_by_user_id(
     user_id: str,
     find_chats_by_user_id_usecase: FindChatsByUserIdUseCase = Depends(get_find_chats_by_user_id_usecase),
 ) -> ChatsResponse:
-    """ユーザーIDに紐づくチャットをすべて取得する."""
+    """Get all chats associated with a user ID."""
     try:
         chats = find_chats_by_user_id_usecase.execute(UserId(value=user_id))
 
@@ -135,7 +135,7 @@ async def get_chats_by_user_id_and_book_id(
     book_id: str,
     find_chats_by_user_id_and_book_id_usecase: FindChatsByUserIdAndBookIdUseCase = Depends(get_find_chats_by_user_id_and_book_id_usecase),
 ):
-    """ユーザーIDと本IDに紐づくチャットをすべて取得する."""
+    """Get all chats associated with a user ID and book ID."""
     try:
         chats = find_chats_by_user_id_and_book_id_usecase.execute(UserId(value=user_id), BookId(value=book_id))
         return [
@@ -163,15 +163,15 @@ async def update_chat_title(
     find_chat_by_id_usecase: FindChatByIdUseCase = Depends(get_find_chat_by_id_usecase),
     update_chat_title_usecase: UpdateChatTitleUseCase = Depends(get_update_chat_title_usecase),
 ):
-    """チャットのタイトルを更新する."""
+    """Update the chat title."""
     try:
         chat_id_obj = ChatId(value=chat_id)
         title = ChatTitle(value=request.title)
 
-        # タイトルを更新
+        # Update title
         update_chat_title_usecase.execute(chat_id=chat_id_obj, title=title)
 
-        # 更新後のチャットを取得
+        # Get the updated chat
         chat = find_chat_by_id_usecase.execute(chat_id_obj)
 
         return ChatResponse(
@@ -199,7 +199,7 @@ async def delete_chat(
     chat_id: str,
     delete_chat_usecase: DeleteChatUseCase = Depends(get_delete_chat_usecase),
 ):
-    """チャットを削除する."""
+    """Delete a chat."""
     try:
         delete_chat_usecase.execute(ChatId(value=chat_id))
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content=None)

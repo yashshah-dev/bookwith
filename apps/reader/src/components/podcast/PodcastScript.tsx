@@ -25,7 +25,7 @@ const PodcastScriptComponent: React.FC<PodcastScriptProps> = ({
   const t = useTranslation()
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
-  // スピーカーごとのスタイルを決定
+  // Determine styles for each speaker
   const speakerStyles = useMemo(() => {
     const uniqueSpeakers = [...new Set(script.map((turn) => turn.speaker))]
     return uniqueSpeakers.reduce<Record<string, number>>(
@@ -37,7 +37,7 @@ const PodcastScriptComponent: React.FC<PodcastScriptProps> = ({
     )
   }, [script])
 
-  // 現在再生中のスクリプト行を特定
+  // Identify the currently playing script line
   const currentScriptIndex = useMemo(() => {
     if (!currentTime || !script.some((turn) => turn.timestamp !== undefined))
       return -1
@@ -114,7 +114,7 @@ const PodcastScriptComponent: React.FC<PodcastScriptProps> = ({
                 className={cn(
                   'group border-b py-4 first:pt-0 last:border-0',
                   turn.timestamp !== undefined &&
-                    'hover:bg-accent/5 -mx-4 cursor-pointer px-4 transition-colors',
+                  'hover:bg-accent/5 -mx-4 cursor-pointer px-4 transition-colors',
                   isCurrentlyPlaying && 'bg-accent/10 -mx-4 px-4',
                 )}
                 role="listitem"

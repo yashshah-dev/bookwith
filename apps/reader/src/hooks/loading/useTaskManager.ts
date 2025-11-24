@@ -13,7 +13,7 @@ export interface UseTaskManagerOptions {
 }
 
 /**
- * タスクの作成・削除を管理するフック
+ * Hook for managing task creation and deletion
  */
 export function useTaskManager(
   setCurrentTaskId: (id: string | null) => void,

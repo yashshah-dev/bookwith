@@ -52,7 +52,7 @@ export const BookPodcastItem = memo<BookPodcastItemProps>(
     const failedPodcast = findPodcastByStatus(displayPodcasts, 'FAILED')
     const handleRetry = () => {
       if (failedPodcast && onRetryPodcast) {
-        // 楽観的更新：ローカルで状態をPROCESSINGに変更
+        // Optimistic update: Change status to PROCESSING locally
         const optimisticPodcasts = displayPodcasts.map((podcast) =>
           podcast.id === failedPodcast.id
             ? { ...podcast, status: 'PROCESSING' as const }
@@ -65,14 +65,14 @@ export const BookPodcastItem = memo<BookPodcastItemProps>(
     const isRetrying = retryingPodcastId === failedPodcast?.id
     const bookTitle = book.metadataTitle || book.name
 
-    // ローディング状態の表示
+    // Display loading state
     const renderLoadingState = () => (
       <div className="flex items-center justify-center p-2">
         <RefreshCw className="text-muted-foreground h-4 w-4 animate-spin" />
       </div>
     )
 
-    // 完了状態のポッドキャストボタン
+    // Completed podcast button
     const renderCompletedPodcastButton = () => (
       <Button
         size="sm"
@@ -88,7 +88,7 @@ export const BookPodcastItem = memo<BookPodcastItemProps>(
       </Button>
     )
 
-    // 処理中状態のポッドキャストボタン
+    // Processing podcast button
     const renderProcessingPodcastButton = () => (
       <Button
         size="sm"
@@ -104,7 +104,7 @@ export const BookPodcastItem = memo<BookPodcastItemProps>(
       </Button>
     )
 
-    // 失敗状態のポッドキャスト表示
+    // Failed podcast display
     const renderFailedPodcastContent = () => (
       <div className="w-full space-y-2">
         <div className="flex text-red-600">
@@ -142,11 +142,11 @@ export const BookPodcastItem = memo<BookPodcastItemProps>(
     const renderCreatePodcastButton = () => {
       const ariaLabel = isCreating
         ? t('podcast.book_item.generating_podcast_aria_label', {
-            name: bookTitle,
-          })
+          name: bookTitle,
+        })
         : t('podcast.book_item.generate_podcast_aria_label', {
-            name: bookTitle,
-          })
+          name: bookTitle,
+        })
 
       return (
         <Button

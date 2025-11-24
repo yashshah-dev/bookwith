@@ -1,4 +1,4 @@
-"""メッセージをIDで検索するユースケース"""
+"""Use case for searching messages by ID"""
 
 from abc import ABC, abstractmethod
 
@@ -11,7 +11,7 @@ from src.domain.message.value_objects.message_id import MessageId
 class FindMessageByIdUseCase(ABC):
     @abstractmethod
     def execute(self, message_id: str) -> Message:
-        """メッセージをIDで検索する"""
+        """Search messages by ID"""
 
 
 class FindMessageByIdUseCaseImpl(FindMessageByIdUseCase):
@@ -19,7 +19,7 @@ class FindMessageByIdUseCaseImpl(FindMessageByIdUseCase):
         self.message_repository = message_repository
 
     def execute(self, message_id: str) -> Message:
-        """メッセージをIDで検索し、見つからない場合は例外をスローする"""
+        """Search messages by ID and throw exception if not found"""
         message_id_obj = MessageId(message_id)
         message = self.message_repository.find_by_id(message_id_obj)
 

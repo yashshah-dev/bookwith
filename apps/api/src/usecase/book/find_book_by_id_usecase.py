@@ -1,4 +1,4 @@
-"""特定の書籍を取得するユースケース"""
+"""Use case for retrieving a specific book"""
 
 from abc import ABC, abstractmethod
 
@@ -9,21 +9,21 @@ from src.domain.book.value_objects.book_id import BookId
 
 
 class FindBookByIdUseCase(ABC):
-    """FindBookByIdUseCaseは、IDで特定の書籍を取得するためのユースケースインターフェースを定義する。"""
+    """FindBookByIdUseCase defines the use case interface for retrieving a specific book by ID."""
 
     @abstractmethod
     def execute(self, book_id: str) -> Book:
-        """IDで特定の書籍を取得する"""
+        """Retrieve a specific book by ID"""
 
 
 class FindBookByIdUseCaseImpl(FindBookByIdUseCase):
-    """FindBookByIdUseCaseImplは、IDで特定の書籍を取得するユースケース実装。"""
+    """FindBookByIdUseCaseImpl is the implementation of the use case for retrieving a specific book by ID."""
 
     def __init__(self, book_repository: BookRepository) -> None:
         self.book_repository = book_repository
 
     def execute(self, book_id: str) -> Book:
-        """IDで特定の書籍を取得する。見つからない場合は例外を発生させる。"""
+        """Retrieve a specific book by ID. Raise exception if not found."""
         book_id_obj = BookId(book_id)
         book = self.book_repository.find_by_id(book_id_obj)
 
